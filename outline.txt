@@ -7,44 +7,86 @@
         - the picture
 - big o
     - how code slows as data grows
-    - it characterized the expected behavior as data size changes
+    - characterizes the expected behavior as data size changes
+    - it can be approached very mathematically
+    - but day-to-day you can use simple rules of thumb
 - real-world examples
     - counting jellybeans
         - O(N) vs O(1)
     - finding words in books
         - O(N) vs O(log N)
-    - example:
-        - linear search
 - terminology
-    - 
+    - O stands for "Order of"
+    - the notation looks very mathy, don't let that throw you
+    - also called algorithmic complexity
+- how it works
+    - you have a chunk of code
+    - figure out what about its data will grow
+    - the size of that data is N
+    - figure out how many steps are in the code, as a function of N
+        - what is a step?
+        - kind of doesn't matter
+    - only interested in the behavior over the long run
+        - discard lower-order terms
+        - discard coefficients
+    - what's left is big-O
+- an example
+        moms = [("Ned", "Eleanor"), ("Max", "Susan"), ("Susan", "Shelly"), ..]
+        def find_mom(moms, child):
+            """Find a needle in a haystack list."""
+            for child_name, mom_name in moms:
+                if child == child_name:
+                    return mom_name
+            return None
+    - find_mom is O(N)
+- another example
+        def how_many_grandmothers(moms):
+            grandmothers = 0
+            for child_name, mom_name in moms:
+                grandmother_name = find_mom(moms, mom_name)
+                if grandmother_name is not None:
+                    grandmothers += 1
+            return grandmothers
+    - how_many_grandmothers is O(N**2)
+- the ideal: O(1)
+    - len(list)
+    - dicts and sets
 - the graph
-- other letters
-    - theta: == exact bound
-    - big-o: <= upper bound
-    - little-o: < non-tight upper bound
-    - big-omega: >= lower bound
-    - little-omega: > non-tight lower bound
-- don't go nuts
-    - for small n, it doesn't matter
-- expected case vs worst case
-- worst case
-    - hash randomization
-    - o11c: 8 in set(range(8, 2**80, 2**64-8))
-        or: range(0, 2**80, 2**64-8)
-        not sure why 2**64-8 is the step
-        the modulus is 2**61-1, *8 == 2**64-8
-- python primitives complexities
+- python primitives
+    - pro-tip: replace "thing in list" with "thing in set"
 - point matching
     - linear search vs clever o(1)
+        - https://nedbat.github.io/point_match/vacation.html#51
+- don't go nuts
+    - for small n, it doesn't matter
+    - zoom in on the graph
+    - rob pike quote
+- solve problems by using someone else's better code
+    - sets instead of lists
+    - indexed database instead of flat files
+- expected case vs worst case
+    - hash randomization
+    - o11c: 8 in set(range(8, 2**70, 2**61-1))
+        or: range(0, 2**80, 2**61-1)
+        the modulus is 2**61-1
 - the internet is harsh
     - "you should be ashamed"
 
 
-    - it's mathy, but don't get alarmed
-- math view vs everyday view
-    - computer science is really math
-    - software engineering uses simpler approximations to cs
 
+
+- attic:
+    - it's mathy, but don't get alarmed
+    - math view vs everyday view
+        - computer science is really math
+        - software engineering uses simpler approximations to cs
+
+    - other letters
+        - theta: == exact bound
+        - big-o: <= upper bound
+        - little-o: < non-tight upper bound
+        - big-omega: >= lower bound
+        - little-omega: > non-tight lower bound
 
 - others:
     http://bigocheatsheet.com/
