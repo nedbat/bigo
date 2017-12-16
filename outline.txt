@@ -1,0 +1,52 @@
+
+
+- intro
+    - big o is the analysis of how algorithms behave
+    - don't feel bad, you can understand this
+    - beginners vs experts
+        - the picture
+- big o
+    - how code slows as data grows
+    - it characterized the expected behavior as data size changes
+- real-world examples
+    - counting jellybeans
+        - O(N) vs O(1)
+    - finding words in books
+        - O(N) vs O(log N)
+    - example:
+        - linear search
+- terminology
+    - 
+- the graph
+- other letters
+    - theta: == exact bound
+    - big-o: <= upper bound
+    - little-o: < non-tight upper bound
+    - big-omega: >= lower bound
+    - little-omega: > non-tight lower bound
+- don't go nuts
+    - for small n, it doesn't matter
+- expected case vs worst case
+- worst case
+    - hash randomization
+    - o11c: 8 in set(range(8, 2**80, 2**64-8))
+        or: range(0, 2**80, 2**64-8)
+        not sure why 2**64-8 is the step
+        the modulus is 2**61-1, *8 == 2**64-8
+- python primitives complexities
+- point matching
+    - linear search vs clever o(1)
+- the internet is harsh
+    - "you should be ashamed"
+
+
+    - it's mathy, but don't get alarmed
+- math view vs everyday view
+    - computer science is really math
+    - software engineering uses simpler approximations to cs
+
+
+- others:
+    http://bigocheatsheet.com/
+    https://rob-bell.net/2009/06/a-beginners-guide-to-big-o-notation/
+    https://www.codenewbie.org/basecs
