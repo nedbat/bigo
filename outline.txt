@@ -64,11 +64,13 @@
 - solve problems by using someone else's better code
     - sets instead of lists
     - indexed database instead of flat files
-- expected case vs worst case
-    - hash randomization
-    - o11c: 8 in set(range(8, 2**70, 2**61-1))
-        or: range(0, 2**80, 2**61-1)
-        the modulus is 2**61-1
+- advanced
+    - expected case vs worst case
+        - hash randomization
+        - o11c: 8 in set(range(8, 2**70, 2**61-1))
+            or: range(0, 2**80, 2**61-1)
+            the modulus is 2**61-1
+    - amortization
 - the internet is harsh
     - "you should be ashamed"
 
