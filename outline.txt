@@ -1,53 +1,53 @@
-
-
 - intro
     - big o is the analysis of how algorithms behave
     - don't feel bad, you can understand this
     - beginners vs experts
         - the picture
 - big o
-    - how code slows as data grows
-    - characterizes the expected behavior as data size changes
-    - it can be approached very mathematically
-    - but day-to-day you can use simple rules of thumb
-- real-world examples
-    - counting jellybeans
-        - O(N) vs O(1)
-    - finding words in books
-        - O(N) vs O(log N)
-- terminology
-    - O stands for "Order of"
-    - the notation looks very mathy, don't let that throw you
-    - also called algorithmic complexity
-- how it works
-    - you have a chunk of code
-    - figure out what about its data will grow
-    - the size of that data is N
-    - figure out how many steps are in the code, as a function of N
-        - what is a step?
-        - kind of doesn't matter
-    - only interested in the behavior over the long run
-        - discard lower-order terms
-        - discard coefficients
-    - what's left is big-O
-- an example
-        moms = [("Ned", "Eleanor"), ("Max", "Susan"), ("Susan", "Shelly"), ..]
-        def find_mom(moms, child):
-            """Find a needle in a haystack list."""
-            for child_name, mom_name in moms:
-                if child == child_name:
-                    return mom_name
-            return None
-    - find_mom is O(N)
-- another example
-        def how_many_grandmothers(moms):
-            grandmothers = 0
-            for child_name, mom_name in moms:
-                grandmother_name = find_mom(moms, mom_name)
-                if grandmother_name is not None:
-                    grandmothers += 1
-            return grandmothers
-    - how_many_grandmothers is O(N**2)
+    - what is it?
+        - how code slows as data grows
+        - characterizes the expected behavior as data size changes
+        - it can be approached very mathematically
+        - but day-to-day you can use simple rules of thumb
+    - real-world examples
+        - counting jellybeans
+            - O(N) vs O(1)
+        - finding words in books
+            - O(N) vs O(log N)
+    - terminology
+        - O stands for "Order of"
+        - the notation looks very mathy, don't let that throw you
+        - also called algorithmic complexity
+- determining big-o
+    - how it works
+        - you have a chunk of code
+        - figure out what about its data will grow
+        - the size of that data is N
+        - figure out how many steps are in the code, as a function of N
+            - what is a step?
+            - kind of doesn't matter
+        - only interested in the behavior over the long run
+            - discard lower-order terms
+            - discard coefficients
+        - what's left is big-O
+    - an example
+            moms = [("Ned", "Eleanor"), ("Max", "Susan"), ("Susan", "Shelly"), ..]
+            def find_mom(moms, child):
+                """Find a needle in a haystack list."""
+                for child_name, mom_name in moms:
+                    if child == child_name:
+                        return mom_name
+                return None
+        - find_mom is O(N)
+    - another example
+            def how_many_grandmothers(moms):
+                grandmothers = 0
+                for child_name, mom_name in moms:
+                    grandmother_name = find_mom(moms, mom_name)
+                    if grandmother_name is not None:
+                        grandmothers += 1
+                return grandmothers
+        - how_many_grandmothers is O(N**2)
 - the ideal: O(1)
     - len(list)
     - dicts and sets
