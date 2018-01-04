@@ -26,10 +26,12 @@ This talk is aimed at people without formal computer science training, especiall
 
 - What is Big-O? (5 min)
     - "How code slows as data grows"
+    - It's a summary of how runtime changes as data gets larger
     - Often presented with a lot of math
         - You can understand it without the math
     - Terminology
         - N is size of data, O(f(N)) is how the time grows
+        - O() means "Order of"
     - Real-world examples to get a feel for it
         - Counting jellybeans
             - O(N) vs O(1)
@@ -39,19 +41,27 @@ This talk is aimed at people without formal computer science training, especiall
     - How to figure Big-O
         - Decide what N means (the size of your data)
         - Count the steps in a typical run of the code
-            - what is a step? Doesn't really matter
+            - What is a step?
+                - Any unit of work that doesn't depend on N
+                - Differences between different units can be glossed over
         - Discard lower-order components and coefficients
+            - We only need the long-term growth, so only keep the most significant parts
     - An example: `find_mom()`
+        - Searches a list of pairs
         - O(N)
     - Another example: `how_many_grandmothers()`
+        - Calls `find_mom()` once for each mom
+        - N times O(N)
         - O(N**2)
 - More theory (7 min)
-    - The graph
-        - ideal: O(1)
-        - avoid: O(N**2)
+    - The graph of different runtimes
+        - Ideal: O(1)
+        - Avoid: O(N**2)
     - Python primitives and their complexities
+        - Table of operations for list, dict, set
     - Last example: point matching, linear search vs clever O(1)
-        - size of code can be misleading
+        - Real code: small code is O(N), big code is O(1)
+        - Size of code can be misleading
 - Other points (6 min)
     - Often, big-O doesn't matter
         - "Fancy algorithms are slow when N is small, and N is usually small."
