@@ -1,14 +1,10 @@
-SLUG = blank
+SLUG = bigo
 
 SLIDE_HTML = $(SLUG).html
 
 SUPPORT = lineselect.js
 
 .PHONY: $(SLIDE_HTML)
-
-SAMPLES = sample.py
-
-OUTPUT = sample.out
 
 slides: $(SLIDE_HTML)
 
