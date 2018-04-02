@@ -142,7 +142,7 @@ from cogutil import *
 <body class="slides">
 
 <div class="slide title" data-layout="clean">
-    <h1>Big-O: How Code Slows as Data Grows</h1>
+    <h1 style="padding-top: 1em">Big-O:<br/>How Code Slows<br/>as Data Grows</h1>
     <h2>Ned Batchelder<br/><a class="implicit" href="http://twitter.com/nedbat"><span class="punct">@</span>nedbat</a></h2>
     <h2><a class="implicit" href="http://bit.ly/shorturl"><span class="punct">http://</span>bit.ly<span class="punct">/</span>shorturl</a></h2>
 </div>
@@ -162,6 +162,37 @@ from cogutil import *
     <h1>Counting beans</h1>
     <img class='incremental' width='48%' src='bean_counting.png' />
     <img class='incremental' width='48%' src='bean_labels.png' />
+</div>
+
+div class="slide">
+    <h1>Title</h1>
+    <pre class="python">
+    moms = [
+        ("Ned", "Eleanor"),
+        ("Max", "Susan"),
+        ("Susan", "Shelly"),
+        ...
+    ]
+    def find_mom(moms, child):
+        """Find a the mom of `child`."""
+        for child_name, mom_name in moms:
+            if child == child_name:
+                return mom_name
+        return None
+    </pre>
+</div>
+
+<div class="slide">
+    <h1>Title</h1>
+    <pre class="python">
+    def how_many_grandmothers(moms):
+        grandmothers = 0
+        for child_name, mom_name in moms:
+            grandmother_name = find_mom(moms, mom_name)
+            if grandmother_name is not None:
+                grandmothers += 1
+        return grandmothers
+    </pre>
 </div>
 
 <!--[[[cog {{{
