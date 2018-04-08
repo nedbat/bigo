@@ -8,7 +8,6 @@ div.text {
 }
 
 .slide {
-    font-family: "Open Sans", sans-serif;
     font-weight: 600;
     margin: 1em;
     border: 1px solid #ccc;
@@ -17,7 +16,6 @@ div.text {
     font-size: 150%;
 }
 h1, h2, h3, h4 {
-    font-family: "Open Sans", sans-serif;
     font-weight: 700;
     line-height: 1.5;
     text-align: left;
@@ -25,7 +23,6 @@ h1, h2, h3, h4 {
 }
 
 .slide.title h1 {
-    font-family: "Open Sans", sans-serif;
     font-weight: 800;
     padding-top: 2em;
     font-size: 200%;
@@ -41,7 +38,6 @@ h1, h2, h3, h4 {
     background-color: #ffb;
 }
 .slide.section h1 {
-    font-family: "Open Sans", sans-serif;
     font-weight: 700;
     margin-top: 3em;
     font-size: 200%;
@@ -86,7 +82,13 @@ h1, h2, h3, h4 {
 }
 
 .center {
-    text-align: center;
+    text-align: center !important;
+}
+
+/* Styled the same as an h1 */
+p.big {
+    font-weight: 700;
+    font-size: 150%;
 }
 
 .slide pre {
