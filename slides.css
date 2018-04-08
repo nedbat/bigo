@@ -234,3 +234,16 @@ table, td, th {
 td, th {
     padding: .35em .5em;
 }
+
+/* Slippy's css reset clobbers the meaning of <sub> and <sup> */
+sub {
+    line-height: 0;
+    font-size: 75%;
+    vertical-align: sub;
+}
+
+sup {
+    line-height: 0;
+    font-size: 75%;
+    vertical-align: super;
+}
