@@ -134,6 +134,15 @@ from cogutil import *
 
     <!-- *** Custom style for this deck {{{ -->
     <style type="text/css">
+    /* for highlighting lines of code */
+    .o_1 {
+        background: #3f3;
+        border-radius: .15em;
+    }
+    .o_n {
+        background: #fbb;
+        border-radius: .15em;
+    }
     </style>
     <!-- }}} -->
 
@@ -153,19 +162,73 @@ from cogutil import *
 
 </div><!-- }}} -->
 
-
+<!--
 <div class="slide image" data-layout="clean">
     <img class='fullheight' src='twostates.jpg' />
 </div>
+-->
+
+<div class="slide">
+    <h1>Big-O</h1>
+    <ul>
+    <li class="incremental">How code slows as data grows</li>
+    <li class="incremental">Mathy, but doesn't have to be</li>
+    <li class="incremental">Rough characterization</li>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>Terminology</h1>
+    <ul>
+    <li class="incremental">N: how much data</li>
+    <li class="incremental">O(<i>blah</i> <i>blah</i> N <i>blah</i>)</li>
+    <li class="incremental">"Order of"</li>
+    <li class="incremental">Not a function!</li>
+    </ul>
+</div>
+
 
 <div class="slide image">
     <h1>Counting beans</h1>
-    <img class='incremental' width='48%' src='bean_counting.png' />
-    <img class='incremental' width='48%' src='bean_labels.png' />
+    <div class='incremental' style="float: left; width: 48%">
+        <img width='100%' src='bean_counting.png' />
+        <h1 class="center">O(N)</h1>
+    </div>
+    <div class='incremental' style="float: right; width: 48%">
+        <img width='100%' src='bean_labels.png' />
+        <h1 class="center">O(1)</h1>
+    </div>
 </div>
 
-div class="slide">
-    <h1>Title</h1>
+<div class="slide">
+    <h1>Finding words</h1>
+    <ul>
+    <li class="incremental">Novel</li>
+    <li class="incremental">Dictionary</li>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>Other words</h1>
+    <ul>
+    <li class="incremental">O(1): constant time</li>
+    <li class="incremental">O(N): linear</li>
+    <li class="incremental">O(N<sup>2</sup>): quadratic</li>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>Determining Big-O</h1>
+    <ul>
+    <li class="incremental">Identify your code</li>
+    <li class="incremental">Identify N</li>
+    <li class="incremental">Count the steps in a typical run</li>
+    <li class="incremental">Keep the most significant part</li>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>An Example</h1>
     <pre class="python">
     moms = [
         ("Ned", "Eleanor"),
@@ -298,7 +361,96 @@ def draw_the_graph(scale):
     <!--[[[end]]]-->
 </div>
 
+<div class="slide">
+    <!-- Slow/Fast {{{ -->
+    <div style="float: left; width=50%;">
+        <h1 style="margin-top: 0">Slow</h1>
+        <div style="position: relative; width=100%">
+            <pre class="python small" style="margin-top:0">
+                def __init__(self):
+                    self.items = []
 
+                def __getitem__(self, pt):
+                    for key, value in self.items:
+                        if key == pt:
+                            return value
+
+                    value = []
+                    self.items.append((pt, value))
+                    return value
+            </pre>
+            <div class="incremental" style="margin-top:5em; width:3em;">
+                <p class="o_1">&nbsp;&nbsp;O(1)</p>
+                <p class="o_n">&nbsp;&nbsp;O(n)</p>
+            </div>
+            <pre class="python small incremental" style="position: absolute; top:0; left:0; margin-top:0">
+                def __init__(self):
+                    self.items = []
+
+                def __getitem__(self, pt):
+                    <span class="o_n">for key, value in self.items:</span>
+                        if key == pt:
+                            return value
+
+                    value = []
+                    <span class="o_1">self.items.append((pt, value))</span>
+                    return value
+            </pre>
+        </div>
+    </div>
+    <div style="position: absolute; top:0; right:0;width=50%">
+        <h1 style="margin-top: 0">Fast</h1>
+        <div style="position: relative; width=100%; padding-right: 2em">
+            <pre class="python small" style="margin-top:0">
+                def __init__(self):
+                    self.items = {}     # pt -> value
+                    self.rounds = {}    # pt -> pt
+
+                def __getitem__(self, pt):
+                    val = self.items.get(pt)
+                    if val is not None:
+                        return val
+
+                    for jitter in [0, 0.5]:
+                        pt_rnd = rounded(pt, jitter)
+                        pt0 = self.rounds.get(pt_rnd)
+                        if pt0 is not None:
+                            return self.items[pt0]
+
+                    self.items[pt] = val = []
+                    for jitter in [0, 0.5]:
+                        pt_rnd = rounded(pt, jitter)
+                        self.rounds[pt_rnd] = pt
+
+                    return val
+            </pre>
+            <pre class="python small incremental" style="position: absolute; top:0; left:0; margin-top:0">
+                def __init__(self):
+                    self.items = {}     # pt -> value
+                    self.rounds = {}    # pt -> pt
+
+                def __getitem__(self, pt):
+                    val = <span class="o_1">self.items.get(pt)</span>
+                    if val is not None:
+                        return val
+
+                    for jitter in [0, 0.5]:
+                        pt_rnd = rounded(pt, jitter)
+                        pt0 = <span class="o_1">self.rounds.get(pt_rnd)</span>
+                        if pt0 is not None:
+                            return <span class="o_1">self.items[pt0]</span>
+
+                    <span class="o_1">self.items[pt] = val = []</span>
+                    for jitter in [0, 0.5]:
+                        pt_rnd = rounded(pt, jitter)
+                        <span class="o_1">self.rounds[pt_rnd] = pt</span>
+
+                    return val
+            </pre>
+        </div>
+    </div>
+    <!-- }}} -->
+</div>
 <div class="slide title" data-layout="clean">
     <h1 style="padding-top: 0em">Questions?</h1>
     <h2 style="margin-top: 5em"><a class="implicit" href="http://twitter.com/nedbat"><span class="punct">@</span>nedbat</a></h2>
