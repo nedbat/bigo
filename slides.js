@@ -86,4 +86,3 @@ $(function() {
         $e.html(typogr.typogrify($e));
     });
 });
-

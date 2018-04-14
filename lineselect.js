@@ -59,7 +59,7 @@
         }
 
         switch (e.keyCode) {
-            case 71:    // G: top
+        case 71:    // G: top
             selected = 1;
             break;
 
