@@ -233,6 +233,7 @@ body.notes {
 
 table, td, th {
     border: 1px solid #888;
+    font-weight: 600;
 }
 td, th {
     padding: .35em .5em;
