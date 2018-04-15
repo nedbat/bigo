@@ -1,3 +1,7 @@
+- set(list) is pointless
+ "if you have a CS degree"
+
+
 <!DOCTYPE html> <!-- vim: set foldmethod=marker cc=60 :-->
 <!--
 Process this file with cog:
@@ -86,7 +90,10 @@ from cogutil import *
 
 <div class="text"><!-- {{{ -->
 
-<p>Blah blah blah.</p>
+<p>There's this thing in computer science that working programmers talk about,
+called "big-O". When a software developer feels bad because they don't have a
+Computer Science degree, it seems like big-O notation gets mentioned as the
+indicator of the grown-ups table.</p>
 
 </div><!-- }}} -->
 
@@ -95,19 +102,57 @@ from cogutil import *
     <ul>
     <li class="incremental">How code slows as data grows</li>
     <li class="incremental">Mathy, but doesn't have to be</li>
-    <li class="incremental">Rough characterization</li>
     </ul>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>Big-O isn't as mystical as it seems at first. It doesn't have to be more
+than a common-sense assessment of how your code will behave as it works on more
+data.</p>
+
+<p>In rhyming form, "How code slows as data grows."  Big-O isn't about how fast
+your code goes at any particular time.  It's about how the running time changes
+as the data size changes.</p>
+
+<p>Big-O notation has a mathematical flavor, but isn't really that complicated
+in day-to-day use.  You can use it without understanding all of the intricacies.</p>
+
+<p>Imagine you have a chunk of code that does something to a bunch of data.
+You’d like to know how much slower the code will go if you give it ten times
+more data. That’s what big-O describes. You might imagine that the answer is of
+course, ten times slower. But that’s not the way real code works. One algorithm
+might go a hundred times slower. Another might not go any slower at all. Big-O
+is a way to analyze the code and determine the slow-down factor.</p>
+
+</div><!-- }}} -->
+
 
 <div class="slide">
     <h1>Terminology</h1>
     <ul>
-    <li class="incremental">N: how much data</li>
     <li class="incremental">O(<i>blah</i> <i>blah</i> N <i>blah</i>)</li>
+    <li class="incremental">N: how much data</li>
     <li class="incremental">"Order of"</li>
     <li class="incremental">Not a function!</li>
     </ul>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>Let's get some terminology straight at the beginning.  The Big-O characterization
+of some code will look like "O( blah blah N blah )".  The N in there is the size
+of your data.  The O stands for "Order of," as in, "The code's run time grows on the order of blah blah N blah."
+The blah blah is an expression using N, like O(N) or O(N<sup>2</sup>).</p>
+
+<p>Although O(N) looks like calling a function named O, this isn't a function call.
+It's just a notation about N.</p>
+
+<p>Just to make things seem extra complicated, the Big-O characterization
+is often called the "complexity" of an algorithm, or the "time complexity."</p>
+
+</div><!-- }}} -->
+
 
 
 <div class="slide image">
@@ -122,23 +167,78 @@ from cogutil import *
     </div>
 </div>
 
+<div class="text"><!-- {{{ -->
+
+<p>Let's consider a real-world example. Suppose you have jars of jelly beans.
+You want to know how many are in each jar.  The first way to do it is to count
+each bean, as this guy on the left is doing.</p>
+
+<p>It's pretty clear that the time it will take to count the beans is
+proportional to the number of beans. If one jar has five times as many beans as
+another, it will take five times longer to count.</p> 
+
+<p>The time it takes to complete the work is proportional to the number of
+beans (or amount of data), so we say it is O(N).  The time grows in the
+same way that N does. It's on the order of N.</p>
+
+<p>Now suppose we arrange our data (beans) differently.  We put a label on each
+jar, indicating how many beans are in the jar.  Now the time to complete the
+task changes enormously, since our worker just has to read the label!  Now no
+matter how many beans are in the jar, it takes the same amount of time to
+determine how many beans there are (assuming we trust the labels).</p>
+
+<p>This is now a constant-time task: no matter how large the jar, it will take
+the same amount of time to determine the number. We just read it off the label.
+This is known as O(1), which is a funny way to write, "the run time doesn't
+depend on N at all."</p>
+
+<p>You might say labelling the jars is cheating. It's not: big-O is all about
+analyzing algorithms and data structures to understand their behavior.  By
+labelling the jar, we chose a different data structure that let us use a better
+algorithm.</p>
+
+</div><!-- }}} -->
+
+
 <div class="slide">
     <h1>Finding words</h1>
     <div class='incremental center' style="float: left; width: 48%">
         <p class="center">Novel</p>
-        <div style='height: 12em; overflow: hidden'>
+        <div style='border: 1px solid #888; border-bottom: 1px dashed; height: 12em; overflow: hidden'>
             <img width='100%' src='novel.jpg' />
         </div>
         <p class="big center">O(N)</p>
     </div>
     <div class='incremental center' style="float: right; width: 48%">
         <p class="center">Dictionary</p>
-        <div style='height: 12em; overflow: hidden'>
+        <div style='border: 1px solid #888; border-bottom: 1px dashed; height: 12em; overflow: hidden'>
             <img width='100%' src='dictionary.jpg' />
         </div>
         <p class="big center">O(log N)</p>
     </div>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>Let's consider another real-world example: finding words in a book.  If I
+hand you a novel, and ask you to find the word "horse" in it, you would start
+at the beginning at read through the novel until you found it.  This is another
+O(N) task. If you double the length of the novel, it could take you twice as
+long to find it.</p>
+
+<p>Now I hand you another book: a dictionary.  Finding the word "horse" is
+easier now.  You open to the middle of the dictionary, and see whether the
+desired word is before or after the word on the page.  If it's before, then you
+open to the middle of the left-hand side, and continue until your
+divide-and-conquer strategy has found you the word.</p>
+
+<p>In this case, doubling the size of the dictionary doesn't double the time it
+takes.  It just adds one more divide-in-half step to the work.  This is known
+as an O(log N) task: the number of steps grows as the number of digits in N
+grows.</p>
+
+</div><!-- }}} -->
+
 
 <div class="slide">
     <h1>Other terms</h1>
@@ -149,6 +249,19 @@ from cogutil import *
     </ul>
 </div>
 
+<div class="text"><!-- {{{ -->
+
+<p>A little more terminology to get out of the way.  Some of the more
+common big-O characterizations have short-hand names.  O(1) is sometimes
+called "constant time" or just "constant" because it doesn't change as
+the data size changes.  O(N) is often called "linear" because the time
+is a linear expression of the data size.  And O(N<sup>2</sup>) is called
+"quadratic" because the time is a quadratic expression of the data size.
+</p>
+
+</div><!-- }}} -->
+
+
 <div class="slide">
     <h1>Determining Big-O</h1>
     <ul>
@@ -158,6 +271,44 @@ from cogutil import *
     <li class="incremental">Keep the most significant part</li>
     </ul>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>OK, so how can you determine the Big-O complexity of a piece of code?</p>
+
+<p>First, figure out what piece of code you are going to consider. This may
+seem obvious, but if you are unclear about the boundaries of the code, you
+may get an answer that is useless to you.  We'll be looking at specific
+functions.</p>
+
+<p>Second, identify what N means.  This will be the size of the data the
+function is working on.  Usually, it will be fairly obvious.  But sometimes,
+there will be more than one way the data can change size, and you need to
+figure out which one you are concerned with.  N will be the size of that
+data.</p>
+
+<p>Third is the real work: you read your code carefully, considering
+how many steps of work it will do in a typical execution run.  Keep track
+of the number of steps, expressed in terms of N.</p>
+
+<p>Once you have a complete expression for the number of steps, you simplify
+it by throwing parts of it away.  Big-O is all about how the run time changes
+as data gets larger and larger.  So only the most significant terms need to be
+kept.</p>
+
+<p>For example, if you counted 2N+1 steps, then you have an O(N) algorithm. There's
+no point keeping the +1, because as N grows larger and larger, the +1 becomes
+more and more insigificant.  Also, the 2 coefficient doesn't matter: 2N grows the
+same as N does: if N doubles, then 2N doubles, and N doubles.  So O(2N+1) is the
+same as O(N), and we keep the simpler form.</p>
+
+<p>About "typical": big-O doesn't by itself imply typical runs.  You can
+also talk about the big-O of worst cases, which we'll touch on later. But when
+people causually mention the big-O complexity of code, they usually mean the
+typical, or expected running time.</p>
+
+</div><!-- }}} -->
+
 
 <div class="slide">
     <h1>An Example</h1>
@@ -181,6 +332,34 @@ from cogutil import *
     <span class='incremental' style='margin-left: 2em'>&rarr;&nbsp; O(N)</span>
     </p>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>Here's a real example. This code searches a list of tuples looking for a
+match on the first element of the tuple. In this case, N is the length of the
+list of tuples.</p>
+
+<p>Since we don't know where any given value is in the list, we don't know
+whether we'll find it at the beginning of the list, or near the end. So we
+guess that over many runs of the function, we'll have to look at (on average)
+half the entries in the list.</p>
+
+<p>Looping over the moms will happen N/2 times. Each time around, there's one
+step to get the next element, and one step each to assign the tuple to
+child_name and mom_name. So the for-loop line gives us 3 * N / 2 steps.</p>
+
+<p>The comparison happens N/2 times, for another N/2 steps.  The return statement
+happens only once, for 1 more step.</p>
+
+<p>The grand total is 3N/2 + N/2 + 1, or 2N+1. Since we are only interested
+in the large-scale growth trends as N gets very large, we drop the +1, and the
+2 coefficient, to get O(N).</p>
+
+<p>This is a linear algorithm: when the moms list doubles in size, we can expect
+it to take twice as long.</p>
+
+</div><!-- }}} -->
+
 
 <div class="slide">
     <h1>Another example</h1>
