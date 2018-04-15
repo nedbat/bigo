@@ -1,2 +1,4 @@
 cogapp
 six
+lxml
+cssselect

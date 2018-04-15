@@ -2,7 +2,7 @@ SLUG = bigo
 
 SLIDE_HTML = $(SLUG).html
 
-SUPPORT = lineselect.js
+SUPPORT = lineselect.js slides.js slides.css
 
 .PHONY: $(SLIDE_HTML)
 
@@ -43,6 +43,6 @@ publish: $(PX) pngs
 	cp -f $(PNG_DIR)/* $(WEBPIXHOME)
 	cp -f $(SLIDE_HTML) $(WEBPREZHOME)/$(SLUG).html
 	cp -f $(SUPPORT) $(WEBPREZHOME)
-	cp -f *.jpg $(WEBPREZHOME)
+	cp -f *.png *.jpg $(WEBPREZHOME)
 	cp -rf slippy $(WEBPREZHOME)
 	cp -rf highlight $(WEBPREZHOME)
