@@ -43,6 +43,6 @@ publish: $(PX) pngs
 	cp -f $(PNG_DIR)/* $(WEBPIXHOME)
 	cp -f $(SLIDE_HTML) $(WEBPREZHOME)/$(SLUG).html
 	cp -f $(SUPPORT) $(WEBPREZHOME)
-	cp -f *.png *.jpg $(WEBPREZHOME)
+	cp -f *.png $(WEBPREZHOME)
 	cp -rf slippy $(WEBPREZHOME)
 	cp -rf highlight $(WEBPREZHOME)

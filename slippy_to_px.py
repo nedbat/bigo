@@ -73,5 +73,5 @@ def slippy_to_px(tname, fname, fout, slug):
     fout.write(lxml.etree.tostring(tmpl))
 
 if __name__ == "__main__":
-    with open(sys.argv[2], "w") as fout:
+    with open(sys.argv[2], "wb") as fout:
         slippy_to_px("px_template.px", sys.argv[1], fout, sys.argv[3])
