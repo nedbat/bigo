@@ -812,9 +812,22 @@ common Python operations.</p>
 <div class="slide">
     <h1>Advanced</h1>
     <ul>
-    <li class="incremental">Typical case vs worst case</li>
-    <li class="incremental">Amortization</li>
-    <li class="incremental">Lots more math</li>
+    <li class="incremental">Typical case vs worst case
+        <pre class="python small">
+        set(i * (47) for i in range(50000))         # O(N)
+        # Wall time: 10.3 ms
+
+        set(i * (2**61-1) for i in range(50000))    # O(N²)
+        # Wall time: 34.2 s   (3300x slower)
+        </pre>
+    </li>
+    <li class="incremental">Amortization
+        <ul>
+        <li>Long-term averaging</li>
+        <li>Operations can take different times</li>
+        </ul>
+    </li>
+    <li class="incremental">Lots more math: O, o, &Omega;, &omega;, &Theta; </li>
     </ul>
 </div>
 
