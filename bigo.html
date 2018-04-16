@@ -1,5 +1,4 @@
 - set(list) is pointless
- "if you have a CS degree"
 
 
 <!DOCTYPE html> <!-- vim: set foldmethod=marker cc=60 :-->
@@ -212,9 +211,6 @@ The blah blah is an expression using N, like O(N) or O(N<sup>2</sup>).</p>
 <p>Although O(N) looks like calling a function named O, this isn't a function call.
 It's just a notation about N.</p>
 
-<p>Just to make things seem extra complicated, the Big-O characterization
-is often called the "complexity" of an algorithm, or the "time complexity."</p>
-
 </div><!-- }}} -->
 
 
@@ -286,19 +282,19 @@ algorithm.</p>
 
 <p>Let's consider another real-world example: finding words in a book.  If I
 hand you a novel, and ask you to find the word "horse" in it, you would start
-at the beginning at read through the novel until you found it.  This is another
-O(N) task. If you double the length of the novel, it could take you twice as
-long to find it.</p>
+at the beginning and read until you found it.  This is another O(N) task. If
+you double the length of the novel, it could take you twice as long to find
+it.</p>
 
 <p>Now I hand you another book: a dictionary.  Finding the word "horse" is
 easier now.  You open to the middle of the dictionary, and see whether the
 desired word is before or after the word on the page.  If it's before, then you
-open to the middle of the left-hand side, and continue until your
-divide-and-conquer strategy has found you the word.</p>
+open to the middle of the left-hand side, and continue your divide-and-conquer
+strategy until you find the word.</p>
 
 <p>In this case, doubling the size of the dictionary doesn't double the time it
 takes.  It just adds one more divide-in-half step to the work.  This is known
-as an O(log N) task: the number of steps grows as the number of digits in N
+as a log-N task: the number of steps grows as the number of digits in N
 grows.</p>
 
 </div><!-- }}} -->
@@ -310,6 +306,7 @@ grows.</p>
     <li class="incremental">O(1): constant time</li>
     <li class="incremental">O(N): linear</li>
     <li class="incremental">O(N<sup>2</sup>): quadratic</li>
+    <li class="incremental">Big-O: algorithmic complexity</li>
     </ul>
 </div>
 
@@ -322,6 +319,11 @@ the data size changes.  O(N) is often called "linear" because the time
 is a linear expression of the data size.  And O(N<sup>2</sup>) is called
 "quadratic" because the time is a quadratic expression of the data size.
 </p>
+
+<p>The whole idea of big-O is also known as "algorithmic complexity" or
+"algorithmic analysis." Those sound complicated and fancy, but it's all the
+same stuff.  Sometimes the big-O characterization is called the "complexity" of
+an algorithm, or the "time complexity."</p>
 
 </div><!-- }}} -->
 
@@ -366,8 +368,8 @@ more and more insigificant.  Also, the 2 coefficient doesn't matter: 2N grows th
 same as N does: if N doubles, then 2N doubles, and N doubles.  So O(2N+1) is the
 same as O(N), and we keep the simpler form.</p>
 
-<p>About "typical": big-O doesn't by itself imply typical runs.  You can
-also talk about the big-O of worst cases, which we'll touch on later. But when
+<p>About "typical": big-O doesn't by itself imply typical runs.  You can also
+talk about the big-O of the worst case, which we'll touch on later. But when
 people causually mention the big-O complexity of code, they usually mean the
 typical, or expected running time.</p>
 
@@ -432,14 +434,14 @@ it to take twice as long.</p>
     def how_many_grandmothers(moms):
         """How many moms are grand-moms?"""
         grandmothers = 0
-        for child, mom in moms:             <span class='incremental'># 3 * N</span>
+        for child, mom in moms:             <span class='incremental'># N</span>
             grandma = find_mom(moms, mom)   <span class='incremental'># N * N</span>
             if grandma:                     <span class='incremental'># N</span>
-                grandmothers += 1           <span class='incremental'># kN</span>
+                grandmothers += 1           <span class='incremental'># N</span>
         return grandmothers                 <span class='incremental'># 1</span>
     </pre>
     <p class='big'>
-    <span class='incremental'>N<sup>2</sup> + (4+k)N + 1</span>
+    <span class='incremental'>N<sup>2</sup> + kN + 1</span>
     <span class='incremental' style='margin-left: 2em'>&rarr;&nbsp; O(N<sup>2</sup>)</span>
     </p>
 </div>
@@ -450,9 +452,12 @@ it to take twice as long.</p>
 consider this function to count how many of the entries in our list are
 grandmothers: the mom in the pair also appears as a child in another pair.</p>
 
+<p>We know that we are only going to keep the most significant component,
+and we don't care about the coefficients, so we won't bother to track them.
+Instead we'll just note the exponent for each part of the code.</p>
+
 <p>Here we're going to loop over the entire moms list so our loop will execute
-N times.  The for statement itself will contribute 3N steps (one to get the
-next element, and one each to assign the two variables).</p>
+N times.  The for statement itself will contribute N steps.</p>
 
 <p>The next line is the interesting one though: we call find_mom.  We just did
 the analysis of find_mom, it's O(N).  So this line contributes N steps, but
@@ -477,6 +482,28 @@ eventually be discarded, so we can skip collecting them.</p>
     <li class="incremental"><tt>mydict[some_key]</tt></li>
     </ul>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>The best possible complexity is constant-time: no matter how much data, it
+always takes the same amount of time.  This seems kind of impossible. How can
+an algorithm take a fixed amount of time no matter how much data it has to work
+on?</p>
+
+<p>We saw one example with the labelled jars of jelly beans.  Python lists work
+the same way: getting the length of a Python list is an O(1) operation because
+the list stores its length outside of the actual data of the list, just as the
+bean jar has a count on the outside.</p>
+
+<p>A more interesting example is looking up a key in a dict.  In the typical
+case, looking up a key in a dict takes the same amount of time no matter how
+large the dict is.  This is why dictionaries underpin every name lookup in
+Python: they are fast.  I don't have time to go into how this works, but it's
+because dictionaries are a clever data structure called a hash table.  Later
+we'll talk about the worst-case scenarios, but for the typical (that is to say,
+almost every) case, dictionary access is O(1).</p>
+
+</div><!-- }}} -->
 
 
 <div class="slide">
@@ -505,6 +532,20 @@ eventually be discarded, so we can skip collecting them.</p>
     <!--[[[end]]]-->
 </div>
 
+<div class="text"><!-- {{{ -->
+
+<p>No discussion of big-O notation would be complete without showing a graph of
+how various complexities grow.  Here the x-axis is the growth of data, and the
+y-axis is running time.  There are no units here, because as with all the rest
+of this discussion, we are only looking for a rough characterization of how the
+running time relates to the data size.</p>
+
+<p>You can see here that N<sup>2</sup> can get really bad really fast.  If there's
+one thing to take away from this entire talk, it's "avoid N<sup>2</sup>".</p>
+
+</div><!-- }}} -->
+
+
 <div class="slide">
     <h1>Python time complexities</h1>
     <table style="float:left;margin-right: 0em">
@@ -532,6 +573,15 @@ eventually be discarded, so we can skip collecting them.</p>
         <p class="incremental">Pro-tip: replace lists with sets</p>
     </div>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>To analyze your code, you have to understand the complexities of the Python
+primitives you'll be using.  These tables show the typical time complexity of
+common Python operations.</p>
+
+</div><!-- }}} -->
+
 
 <div class="slide">
     <!-- Slow/Fast {{{ -->
