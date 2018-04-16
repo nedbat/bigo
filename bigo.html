@@ -116,11 +116,31 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
     <!-- *** Custom style for this deck {{{ -->
     <style type="text/css">
     /* for highlighting lines of code */
+    .absleft {
+        position: absolute;
+        top: 0;
+        left: 5%;
+        width: 45%;
+        padding-right: 5%;
+        box-sizing: border-box;
+    }
+    .absright {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        padding-right: 5%;
+        box-sizing: border-box;
+    }
     .o_1 {
         background: #3f3;
         border-radius: .15em;
     }
     .o_n {
+        background: #bbf;
+        border-radius: .15em;
+    }
+    .o_n2 {
         background: #fbb;
         border-radius: .15em;
     }
@@ -137,6 +157,16 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
     }
     svg text {
         font-size: 20px;
+    }
+    .popup {
+        background: white;
+        position: absolute;
+        border: .3em solid #f66;
+        border-radius: 1em;
+        box-shadow: .35em .35em .2em rgba(0, 0, 0, 0.4);
+    }
+    div.popup {
+        padding: .6em 1em;
     }
     </style>
     <!-- }}} -->
@@ -584,104 +614,156 @@ common Python operations.</p>
 
 
 <div class="slide">
-    <!-- Slow/Fast {{{ -->
-    <div style="float: left; width=50%;">
+    <!-- Slow/Fast 2 {{{ -->
+    <div class="absleft">
         <h1 style="margin-top: 0">Slow</h1>
-        <div style="position: relative; width=100%">
-            <pre class="python small" style="margin-top:0">
-                def __init__(self):
-                    self.items = []
+        <pre class="python small" style="margin-top:0">
+            def __init__(self):
+                self.items = []
 
-                def __getitem__(self, pt):
-                    for key, value in self.items:
-                        if key == pt:
-                            return value
+            def __getitem__(self, pt):
+                for key, value in self.items:
+                    if key == pt:
+                        return value
 
-                    value = []
-                    self.items.append((pt, value))
-                    return value
-            </pre>
-            <div class="incremental" style="margin-top:5em; width:3em;">
-                <p class="o_1">&nbsp;&nbsp;O(1)</p>
-                <p class="o_n">&nbsp;&nbsp;O(N)</p>
-            </div>
-            <pre class="python small incremental" style="position: absolute; top:0; left:0; margin-top:0">
-                def __init__(self):
-                    self.items = []
-
-                def __getitem__(self, pt):
-                    <span class="o_n">for key, value in self.items:</span>
-                        if key == pt:
-                            return value
-
-                    value = []
-                    <span class="o_1">self.items.append((pt, value))</span>
-                    return value
-            </pre>
-        </div>
+                value = []
+                self.items.append((pt, value))
+                return value
+        </pre>
     </div>
-    <div style="position: absolute; top:0; right:0;width=50%">
+    <div class="absright">
         <h1 style="margin-top: 0">Fast</h1>
-        <div style="position: relative; width=100%; padding-right: 2em">
-            <pre class="python small" style="margin-top:0">
-                def __init__(self):
-                    self.items = {}     # pt -> value
-                    self.rounds = {}    # pt -> pt
+        <pre class="python small" style="margin-top:0">
+            def __init__(self):
+                self.items = {}     # pt -> value
+                self.rounds = {}    # pt -> pt
 
-                def __getitem__(self, pt):
-                    val = self.items.get(pt)
-                    if val is not None:
-                        return val
-
-                    for jitter in [0, 0.5]:
-                        pt_rnd = rounded(pt, jitter)
-                        pt0 = self.rounds.get(pt_rnd)
-                        if pt0 is not None:
-                            return self.items[pt0]
-
-                    self.items[pt] = val = []
-                    for jitter in [0, 0.5]:
-                        pt_rnd = rounded(pt, jitter)
-                        self.rounds[pt_rnd] = pt
-
+            def __getitem__(self, pt):
+                val = self.items.get(pt)
+                if val is not None:
                     return val
-            </pre>
-            <pre class="python small incremental" style="position: absolute; top:0; left:0; margin-top:0">
-                def __init__(self):
-                    self.items = {}     # pt -> value
-                    self.rounds = {}    # pt -> pt
 
-                def __getitem__(self, pt):
-                    val = <span class="o_1">self.items.get(pt)</span>
-                    if val is not None:
-                        return val
+                for jitter in [0, 0.5]:
+                    pt_rnd = rounded(pt, jitter)
+                    pt0 = self.rounds.get(pt_rnd)
+                    if pt0 is not None:
+                        return self.items[pt0]
 
-                    for jitter in [0, 0.5]:
-                        pt_rnd = rounded(pt, jitter)
-                        pt0 = <span class="o_1">self.rounds.get(pt_rnd)</span>
-                        if pt0 is not None:
-                            return <span class="o_1">self.items[pt0]</span>
+                self.items[pt] = val = []
+                for jitter in [0, 0.5]:
+                    pt_rnd = rounded(pt, jitter)
+                    self.rounds[pt_rnd] = pt
 
-                    <span class="o_1">self.items[pt] = val = []</span>
-                    for jitter in [0, 0.5]:
-                        pt_rnd = rounded(pt, jitter)
-                        <span class="o_1">self.rounds[pt_rnd] = pt</span>
+                return val
+        </pre>
+    </div>
+    <div class="absright incremental">
+        <p style="text-align: right; margin-top: .75em">
+            <span class="o_n">&nbsp; O(N) &nbsp;</span>
+            <span class="o_1">&nbsp; O(1) &nbsp;</span>
+        </p>
+    </div>
+    <div class="absleft incremental">
+        <h1 style="margin-top: 0">&nbsp;</h1>
+        <pre class="python small">
+            def __init__(self):
+                self.items = []
 
+            def __getitem__(self, pt):
+                <span class="o_n">for key, value in self.items:</span>
+                    if key == pt:
+                        return value
+
+                value = []
+                <span class="o_1">self.items.append((pt, value))</span>
+                return value
+        </pre>
+    </div>
+    <div class="absright incremental">
+        <h1 style="margin-top: 0">&nbsp;</h1>
+        <pre class="python small">
+            def __init__(self):
+                self.items = {}     # pt -> value
+                self.rounds = {}    # pt -> pt
+
+            def __getitem__(self, pt):
+                val = <span class="o_1">self.items.get(pt)</span>
+                if val is not None:
                     return val
-            </pre>
-        </div>
+
+                for jitter in [0, 0.5]:
+                    pt_rnd = rounded(pt, jitter)
+                    pt0 = <span class="o_1">self.rounds.get(pt_rnd)</span>
+                    if pt0 is not None:
+                        return <span class="o_1">self.items[pt0]</span>
+
+                <span class="o_1">self.items[pt] = val = []</span>
+                for jitter in [0, 0.5]:
+                    pt_rnd = rounded(pt, jitter)
+                    <span class="o_1">self.rounds[pt_rnd] = pt</span>
+
+                return val
+        </pre>
+    </div>
+    <div class="incremental" style='position:absolute; bottom:2.5em; left:5%; border: 1px solid #888; width: 42%; height: 10em; overflow: hidden'>
+        <img src="straps.png" width="125%"/>
+    </div>
+    <div class="incremental">
+    <div class="absright">
+        <p style="text-align: right; margin-top: .75em">
+            <span class="o_n2">&nbsp; O(N<sup>2</sup>) &nbsp;</span>
+            <span class="o_n">&nbsp; O(N) &nbsp;</span>
+            <span class="o_1">&nbsp; O(1) &nbsp;</span>
+        </p>
+    </div>
+    <div class="absleft">
+        <h1 style="margin-top: 0">&nbsp;</h1>
+        <pre class="python small">
+            def __init__(self):
+                self.items = []
+
+            def __getitem__(self, pt):
+                <span class="o_n2">for key, value in self.items:</span>
+                    if key == pt:
+                        return value
+
+                value = []
+                <span class="o_n">self.items.append((pt, value))</span>
+                return value
+        </pre>
+    </div>
+    <div class="absright">
+        <h1 style="margin-top: 0">&nbsp;</h1>
+        <pre class="python small">
+            def __init__(self):
+                self.items = {}     # pt -> value
+                self.rounds = {}    # pt -> pt
+
+            def __getitem__(self, pt):
+                val = <span class="o_n">self.items.get(pt)</span>
+                if val is not None:
+                    return val
+
+                for jitter in [0, 0.5]:
+                    pt_rnd = rounded(pt, jitter)
+                    pt0 = <span class="o_n">self.rounds.get(pt_rnd)</span>
+                    if pt0 is not None:
+                        return <span class="o_n">self.items[pt0]</span>
+
+                <span class="o_n">self.items[pt] = val = []</span>
+                for jitter in [0, 0.5]:
+                    pt_rnd = rounded(pt, jitter)
+                    <span class="o_n">self.rounds[pt_rnd] = pt</span>
+
+                return val
+        </pre>
+    </div>
+    </div>
+    <div class="incremental">
+        <div class="popup" style="top:2.5em;left:11.5em;">20s ☹</div>
+        <div class="popup" style="top:2.5em;right:1.5em;">0.4s! ☺</div>
     </div>
     <!-- }}} -->
-</div>
-
-<div class="slide">
-    <img style="float:right;border: 1px solid #888;width:70%" src="straps.png" />
-    <h1>Results</h1>
-    <div style='font-size: 120%'>
-        <p class="incremental">~2100 points</p>
-        <p class="incremental">slow: <b>20</b> sec</p>
-        <p class="incremental">fast: <b>0.4</b> sec!</p>
-    </div>
 </div>
 
 <div class="slide">
