@@ -194,6 +194,7 @@ indicator of the grown-ups table.</p>
     <h1>Big-O</h1>
     <ul>
     <li class="incremental">How code slows as data grows</li>
+    <li class="incremental">Not the same as running time</li>
     <li class="incremental">Mathy, but doesn't have to be</li>
     </ul>
 </div>
@@ -208,15 +209,15 @@ data.</p>
 your code goes at any particular time.  It's about how the running time changes
 as the data size changes.</p>
 
-<p>Big-O notation has a mathematical flavor, but isn't really that complicated
-in day-to-day use.  You can use it without understanding all of the intricacies.</p>
-
 <p>Imagine you have a chunk of code that does something to a bunch of data.
 You’d like to know how much slower the code will go if you give it ten times
 more data. That’s what big-O describes. You might imagine that the answer is of
 course, ten times slower. But that’s not the way real code works. One algorithm
 might go a hundred times slower. Another might not go any slower at all. Big-O
 is a way to analyze the code and determine the slow-down factor.</p>
+
+<p>Big-O notation has a mathematical flavor, but isn't really that complicated
+in day-to-day use.  You can use it without understanding all of the intricacies.</p>
 
 </div><!-- }}} -->
 
@@ -327,6 +328,13 @@ takes.  It just adds one more divide-in-half step to the work.  This is known
 as a log-N task: the number of steps grows as the number of digits in N
 grows.</p>
 
+<p>Counting beans and finding words are both examples of real-world tasks that
+have very different growth rates, depending on the details of the job.  Big-O
+notation is a way to understand growth rates. Understanding the algorithmic
+complexity of your code is important for writing efficient code that performs
+as you want.</p>
+
+
 </div><!-- }}} -->
 
 
@@ -336,7 +344,12 @@ grows.</p>
     <li class="incremental">O(1): constant time</li>
     <li class="incremental">O(N): linear</li>
     <li class="incremental">O(N<sup>2</sup>): quadratic</li>
-    <li class="incremental">Big-O: algorithmic complexity</li>
+    <li class="incremental">Big-O:
+        <ul>
+        <li>complexity</li>
+        <li>algorithmic complexity</li>
+        <li>asymptotic complexity</li>
+        </ul>
     </ul>
 </div>
 
@@ -610,6 +623,12 @@ one thing to take away from this entire talk, it's "avoid N<sup>2</sup>".</p>
 primitives you'll be using.  These tables show the typical time complexity of
 common Python operations.</p>
 
+<p>Many of the similar operations on list, dict, and set have the same
+complexities.  A big difference is finding an element in each.  In particular,
+finding an element in a list is O(N), while finding an element in a dict or set
+is O(1).  This can make a huge difference in your program's speed.  If you can
+replace a list lookup with a set lookup, do it.</p>
+
 </div><!-- }}} -->
 
 
@@ -709,62 +728,31 @@ common Python operations.</p>
         <img src="straps.png" width="125%"/>
     </div>
     <div class="incremental">
-    <div class="absright">
-        <p style="text-align: right; margin-top: .75em">
-            <span class="o_n2">&nbsp; O(N<sup>2</sup>) &nbsp;</span>
-            <span class="o_n">&nbsp; O(N) &nbsp;</span>
-            <span class="o_1">&nbsp; O(1) &nbsp;</span>
-        </p>
-    </div>
-    <div class="absleft">
-        <h1 style="margin-top: 0">&nbsp;</h1>
-        <pre class="python small">
-            def __init__(self):
-                self.items = []
-
-            def __getitem__(self, pt):
-                <span class="o_n2">for key, value in self.items:</span>
-                    if key == pt:
-                        return value
-
-                value = []
-                <span class="o_n">self.items.append((pt, value))</span>
-                return value
-        </pre>
-    </div>
-    <div class="absright">
-        <h1 style="margin-top: 0">&nbsp;</h1>
-        <pre class="python small">
-            def __init__(self):
-                self.items = {}     # pt -> value
-                self.rounds = {}    # pt -> pt
-
-            def __getitem__(self, pt):
-                val = <span class="o_n">self.items.get(pt)</span>
-                if val is not None:
-                    return val
-
-                for jitter in [0, 0.5]:
-                    pt_rnd = rounded(pt, jitter)
-                    pt0 = <span class="o_n">self.rounds.get(pt_rnd)</span>
-                    if pt0 is not None:
-                        return <span class="o_n">self.items[pt0]</span>
-
-                <span class="o_n">self.items[pt] = val = []</span>
-                for jitter in [0, 0.5]:
-                    pt_rnd = rounded(pt, jitter)
-                    <span class="o_n">self.rounds[pt_rnd] = pt</span>
-
-                return val
-        </pre>
-    </div>
-    </div>
-    <div class="incremental">
+        <div class="popup" style="top:14em;left:11em;">2000 pts</div>
         <div class="popup" style="top:2.5em;left:11.5em;">20s ☹</div>
         <div class="popup" style="top:2.5em;right:1.5em;">0.4s! ☺</div>
     </div>
     <!-- }}} -->
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>Here's an example of two implementations of a function. Don't worry about
+the details of the code.  Although the left one is shorter, and uses fewer data
+structures, it's slower.  If we look at the lines that deal with the data, we
+can see why.  The left code has an O(N) line, while the right code only has
+O(1) lines.</p>
+
+<p>This code deals with a collection of points.  You can't see it here, but
+this function is called once for each point in the collection, so the O(N) line
+in effect becomes an O(N²) line.  The left code made the whole program O(N²),
+while the right code made it O(N).</p>
+
+<p>Running with 2000 points, the N² code took 20 seconds.  Switching to the O(N)
+code reduced the time to 0.4 seconds.</p>
+
+</div><!-- }}} -->
+
 
 <div class="slide">
     <h1>Small numbers</h1>
