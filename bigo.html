@@ -9,78 +9,6 @@ Process this file with cog:
     $ python -m cogapp -r bigo.html
 
 -->
-<!--[[[cog {{{ Python3.6 version check and def draw_the_graph
-import sys
-assert sys.version_info > (3, 6), "This needs Python 3.6+"
-
-SX, SY = 1000, 650
-LABEL_MARGIN = 10
-
-def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, css_class=''):
-    import math
-    from curves import lrange, beziers
-
-    cog.outl(f'''\
-    <svg class="{css_class}" viewBox="0 0 {SX} {SY}">
-        <g transform="translate(0 {SY}) scale({scale}, {-scale})">
-            <rect fill="white" stroke="#333" stroke-width="{stroke_width/2}" height="100%" width="100%" x="0" y="0"/>
-    '''.rstrip())
-    if axis_labels:
-        cog.outl(f'''\
-            <text transform="scale({1/scale} {1/-scale}) translate({SX - 50} {-LABEL_MARGIN})">data</text>
-            <text transform="rotate(-90) scale({1/scale} {1/-scale}) translate({-SY + LABEL_MARGIN} {-LABEL_MARGIN})">time</text>
-        '''.rstrip())
-
-    fns = [
-        ('#ff3333', (50, 300), 'n²', lambda n: n * n),
-        ('#ff9933', (125, 300), 'n log n', lambda n: n * math.log(n/2.+1) + 3),
-        ('#0088ff', (300, 300), 'n', lambda n: n + 6),
-        ('#00aa99', (440, 150), 'log n', lambda n: 6 * math.log(n+1)),
-        ('#33cc00', (475, 60), '1', lambda n: 10),
-    ]
-    for color, exprxy, expr, fn in fns:
-        pts = []
-        for x in lrange(SX, 20):
-            y = fn(x)
-            if y > 2 * SY:
-                break
-            pts.append((x, y))
-
-        # Main curves
-        if 1:
-            cog.out(f"            <path d='M{pts[0][0]:.3f},{pts[0][1]:.3f} ")
-            for p1, p2, p3 in beziers(pts):
-                cog.out(f"C{p1[0]:.3f},{p1[1]:.3f} {p2[0]:.3f},{p2[1]:.3f} {p3[0]:.3f},{p3[1]:.3f} ")
-            cog.outl(f"' stroke='{color}' stroke-width='{stroke_width}' fill='none' />")
-
-        if curve_labels:
-            cog.outl(f'''\
-            <text transform="scale({2/scale} {-2/scale})" width="150" height="50" x="{exprxy[0]}" y="{-exprxy[1]}">{expr}</text>
-            '''.rstrip())
-
-        # Straight lines
-        if 0:
-            cog.out("<path d='M")
-            for pt in pts:
-                cog.out("{:.3f},{:.3f} ".format(*pt))
-            cog.outl("' stroke='black' stroke-width='2' fill='none' vector-effect='non-scaling-stroke' />")
-        
-        # Bezier handles
-        if 0:
-            for p1, p2, p3 in beziers(pts):
-                cog.outl("<circle cx='{}' cy='{}' r='.02' stroke-width='.5' fill='none' stroke='black' vector-effect='non-scaling-stroke' />".format(*p1))
-                cog.outl("<circle cx='{}' cy='{}' r='.02' stroke-width='.5' fill='none' stroke='black' vector-effect='non-scaling-stroke' />".format(*p2))
-                cog.outl("<circle cx='{}' cy='{}' r='.02' stroke-width='.5' fill='black' stroke='black' vector-effect='non-scaling-stroke' />".format(*p3))
-
-    cog.out('''\
-        </g>
-    </svg>
-    ''')
-
-]]]-->
-<!--[[[end]]]-->
-}}}
-
 <html>
 <!-- *** Head stuff {{{ -->
 <head>
@@ -176,6 +104,79 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
 
 </head>
 <!-- }}} -->
+
+<!--[[[cog {{{ Python3.6 version check and def draw_the_graph
+import sys
+assert sys.version_info > (3, 6), "This needs Python 3.6+"
+
+SX, SY = 1000, 650
+LABEL_MARGIN = 10
+
+def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, css_class=''):
+    import math
+    from curves import lrange, beziers
+
+    cog.outl(f'''\
+    <svg class="{css_class}" viewBox="0 0 {SX} {SY}">
+        <g transform="translate(0 {SY}) scale({scale}, {-scale})">
+            <rect fill="white" stroke="#333" stroke-width="{stroke_width/2}" height="100%" width="100%" x="0" y="0"/>
+    '''.rstrip())
+    if axis_labels:
+        cog.outl(f'''\
+            <text transform="scale({1/scale} {1/-scale}) translate({SX - 50} {-LABEL_MARGIN})">data</text>
+            <text transform="rotate(-90) scale({1/scale} {1/-scale}) translate({-SY + LABEL_MARGIN} {-LABEL_MARGIN})">time</text>
+        '''.rstrip())
+
+    fns = [
+        ('#ff3333', (50, 300), 'n²', lambda n: n * n),
+        ('#ff9933', (125, 300), 'n log n', lambda n: n * math.log(n/2.+1) + 3),
+        ('#0088ff', (300, 300), 'n', lambda n: n + 6),
+        ('#00aa99', (440, 150), 'log n', lambda n: 6 * math.log(n+1)),
+        ('#33cc00', (475, 60), '1', lambda n: 10),
+    ]
+    for color, exprxy, expr, fn in fns:
+        pts = []
+        for x in lrange(SX, 20):
+            y = fn(x)
+            if y > 2 * SY:
+                break
+            pts.append((x, y))
+
+        # Main curves
+        if 1:
+            cog.out(f"            <path d='M{pts[0][0]:.3f},{pts[0][1]:.3f} ")
+            for p1, p2, p3 in beziers(pts):
+                cog.out(f"C{p1[0]:.3f},{p1[1]:.3f} {p2[0]:.3f},{p2[1]:.3f} {p3[0]:.3f},{p3[1]:.3f} ")
+            cog.outl(f"' stroke='{color}' stroke-width='{stroke_width}' fill='none' />")
+
+        if curve_labels:
+            cog.outl(f'''\
+            <text transform="scale({2/scale} {-2/scale})" width="150" height="50" x="{exprxy[0]}" y="{-exprxy[1]}">{expr}</text>
+            '''.rstrip())
+
+        # Straight lines
+        if 0:
+            cog.out("<path d='M")
+            for pt in pts:
+                cog.out("{:.3f},{:.3f} ".format(*pt))
+            cog.outl("' stroke='black' stroke-width='2' fill='none' vector-effect='non-scaling-stroke' />")
+
+        # Bezier handles
+        if 0:
+            for p1, p2, p3 in beziers(pts):
+                cog.outl("<circle cx='{}' cy='{}' r='.02' stroke-width='.5' fill='none' stroke='black' vector-effect='non-scaling-stroke' />".format(*p1))
+                cog.outl("<circle cx='{}' cy='{}' r='.02' stroke-width='.5' fill='none' stroke='black' vector-effect='non-scaling-stroke' />".format(*p2))
+                cog.outl("<circle cx='{}' cy='{}' r='.02' stroke-width='.5' fill='black' stroke='black' vector-effect='non-scaling-stroke' />".format(*p3))
+
+    cog.out('''\
+        </g>
+    </svg>
+    ''')
+
+]]]-->
+<!--[[[end]]]-->
+}}}
+
 <body class="slides">
 
 <div class="slide title" data-layout="clean">
