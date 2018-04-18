@@ -32,7 +32,8 @@ def slippy_to_px(tname, fname, fout, slug):
 
     # Find text in the presentation
     islide = 0
-    lh = lxml.html.parse(fname)
+    with open(fname, encoding='utf-8') as f:
+        lh = lxml.html.parse(f)
     for div in lh.getroot().cssselect("div.text, div.slide"):
         if has_class(div, "slide"):
             title = div.get('title')
@@ -70,8 +71,8 @@ def slippy_to_px(tname, fname, fout, slug):
                 out.add(c)
 
     content.getparent().remove(content)
-    fout.write(lxml.etree.tostring(tmpl))
+    fout.write(lxml.etree.tostring(tmpl, encoding='unicode'))
 
 if __name__ == "__main__":
-    with open(sys.argv[2], "wb") as fout:
+    with open(sys.argv[2], "w", encoding='utf-8') as fout:
         slippy_to_px("px_template.px", sys.argv[1], fout, sys.argv[3])
