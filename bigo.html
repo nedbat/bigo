@@ -1,6 +1,3 @@
-- set(list) is pointless
-
-
 <!DOCTYPE html> <!-- vim: set foldmethod=marker cc=60 :-->
 <!--
 Process this file with cog:
@@ -867,6 +864,13 @@ building a set an O(N) operation.  But if you know how values are hashed,
 you can use a collection of values that all hash to the same value.  This
 worst-case scenario makes the lookup O(N), which makes building the set O(N²).</p>
 
+<p>Here are a typical case and a worst case:</p>
+
+<code lang="python">
+set(i * (47) for i in range(50000))         # O(N)  10.3 ms
+set(i * (2**61-1) for i in range(50000))    # O(N²) 34.2 s (3300x slower!)
+</code>
+
 <p>Dictionaries have the same worst-case behavior.  This was the basis for a
 denial-of-service attack against web servers.  The defense against the attack
 was hash randomization, which prevented the attackers from knowing how strings
@@ -890,14 +894,14 @@ you have to.</p>
 <div class="text"><!-- {{{ -->
 
 <p>If you do discuss this more, a word of warning: experts are not always nice.
-When I began thinking about this topic last fall, I wrote it up on my blog.
+When I began thinking about this topic last fall, <a pref='text/slowsgrows.px'>I wrote it up on my blog</a>.
 A lot of people seemed to like it.</p>
 
 <p>But one commenter was less pleased.  While their tone could use some work,
 I appreciated the technical point they tried to make.  I looked into it more
-and decided they were actually wrong about it.</p>
+and decided they were actually wrong about it.  They didn't agree.</p>
 
-<p>But I got another blog post out of it...</p>
+<p>But I got <a pref='blog/toxic-experts.bx'>another blog post</a> out of it...</p>
 
 </div><!-- }}} -->
 
@@ -910,6 +914,14 @@ and decided they were actually wrong about it.</p>
     <li class="incremental">You can do the thing</li>
     </ul>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>I hope what you've gotten from this is that Big-O is useful, and doesn't
+have to be complicated.  Thanks.</p>
+
+</div><!-- }}} -->
+
 
 
 <div class="slide title" data-layout="clean">
