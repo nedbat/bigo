@@ -168,6 +168,9 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
     div.popup {
         padding: .6em 1em;
     }
+    .shadow {
+        box-shadow: .35em .35em .2em rgba(0, 0, 0, 0.4);
+    }
     </style>
     <!-- }}} -->
 
@@ -797,9 +800,32 @@ code reduced the time to 0.4 seconds.</p>
     <img class="incremental" style="position:absolute;right:3.5em;top:2em;width:40%" src="fancy-algorithms.png" />
 </div>
 
+<div class="text"><!-- {{{ -->
+
+<p>Don't fall into the trap of thinking that Big-O is everything though.  What
+you really care about is the running time of your code on your actual expected
+data.  An O(N²) algorithm might be faster than an O(N) algorithm for the range
+of data you'll be using.</p>
+
+<p>Here I've zoomed into the graph down near the small numbers.  The curves are
+all scrambled up because the actual coefficients I used make the constant-time
+algorithm slower than the others for the very small numbers.</p>
+
+<p>Don't get fancy unless you have to.  For small data the simplest algorithms,
+even if they have worse complexity, are best.</p>
+
+</div><!-- }}} -->
+
+
 <div class="slide">
     <h1>Advanced</h1>
     <ul>
+    <li class="incremental">Amortization
+        <ul>
+        <li class="incremental">Long-term averaging</li>
+        <li class="incremental">Operations can take different times</li>
+        </ul>
+    </li>
     <li class="incremental">Typical case vs worst case
         <pre class="python small incremental">
         set(i * (47) for i in range(50000))         # O(N)
@@ -807,25 +833,73 @@ code reduced the time to 0.4 seconds.</p>
         </pre>
         <pre class="python small incremental">
         set(i * (2**61-1) for i in range(50000))    # O(N²)
-        # Wall time: 34.2 s   (3300x slower)
+        # Wall time: 34.2 s   (3300x slower!)
         </pre>
-    </li>
-    <li class="incremental">Amortization
-        <ul>
-        <li class="incremental">Long-term averaging</li>
-        <li class="incremental">Operations can take different times</li>
-        </ul>
     </li>
     <li class="incremental">Lots more math: O, o, &Omega;, &omega;, &Theta; </li>
     </ul>
 </div>
 
+<div class="text"><!-- {{{ -->
+
+<p>Let's touch quickly on some advanced pieces.</p>
+
+<p>Big-O is about the long-term growth of an algorithm.  That can involve
+averaging many operations.  Individual operations may not all take the
+same amount of time.  This is called amortization, which is a fancy
+word that means averaging.</p>
+
+<p>For example, we say that appending to a list is O(1), but that doesn't
+mean that every call to append() takes the same amount of time.  In fact,
+most of the calls take the same short time, but some of the calls take longer,
+and those long calls get longer as the list gets longer.  But they also get
+less frequent, so the average is a constant time.</p>
+
+<p>So far all of this discussion about the typical, or expected time for
+operations.  That is, the time the algorithm will take for a typical data
+set.  Sometimes it's also important to consider the worst case.  How will
+the algorithm perform if given specially crafted data that will make it
+take as long as possible?</p>
+
+<p>As an example, looking up a value in a set is typically O(1), which makes
+building a set an O(N) operation.  But if you know how values are hashed,
+you can use a collection of values that all hash to the same value.  This
+worst-case scenario makes the lookup O(N), which makes building the set O(N²).</p>
+
+<p>Dictionaries have the same worst-case behavior.  This was the basis for a
+denial-of-service attack against web servers.  The defense against the attack
+was hash randomization, which prevented the attackers from knowing how strings
+would be hashed.</p>
+
+<p>Lastly, if you do more research into this, there is much more math involved,
+with more symbols.  Know that for day-to-day programming, you already have
+everything you need.  If you enjoy the math, go for it, but don't feel like
+you have to.</p>
+
+</div><!-- }}} -->
+
 
 <div class="slide" data-layout="clean">
     <h1>Experts</h1>
     <img class='incremental' src='blogpost.png' height='100%'/>
-    <img class='incremental' src='shame.png' width='95%' style='position:absolute;top:8em;left:.5em;border: 1px solid #888; border-radius: 10px'/>
+    <img class='incremental shadow' src='shame.png' width='95%' style='position:absolute;top:8em;left:.5em;border: 1px solid #888; border-radius: 10px'/>
+    <img class='incremental shadow' src='toxic_experts.png' height='100%' style='position:absolute;top:16.5em;left:3em;'/>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>If you do discuss this more, a word of warning: experts are not always nice.
+When I began thinking about this topic last fall, I wrote it up on my blog.
+A lot of people seemed to like it.</p>
+
+<p>But one commenter was less pleased.  While their tone could use some work,
+I appreciated the technical point they tried to make.  I looked into it more
+and decided they were actually wrong about it.</p>
+
+<p>But I got another blog post out of it...</p>
+
+</div><!-- }}} -->
+
 
 <div class="slide">
     <h1>Summary</h1>
