@@ -184,10 +184,12 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
 
 <div class="text"><!-- {{{ -->
 
-<p>There's this thing in computer science that working programmers talk about,
-called "big-O". When a software developer feels bad because they don't have a
-Computer Science degree, it seems like big-O notation gets mentioned as the
-indicator of the grown-ups table.</p>
+<p>Software engineering is a strange field, because we're a mixture of people
+with computer science degrees from fancy colleges, and people who are
+self-taught.  When a software developer feels bad because they don't have a
+Computer Science degree, one of the things they mention that seems like a
+dividing line between the formally taught and the self-taught is this thing
+called Big-O.</p>
 
 </div><!-- }}} -->
 
@@ -195,6 +197,8 @@ indicator of the grown-ups table.</p>
     <h1>Big-O</h1>
     <ul>
     <li class="incremental">How code slows as data grows</li>
+    <li class="incremental">Big trend over time</li>
+    <li class="incremental">10&times; data &rarr; ??&times; time</li>
     <li class="incremental">Not the same as running time</li>
     <li class="incremental">Mathy, but doesn't have to be</li>
     </ul>
@@ -202,7 +206,9 @@ indicator of the grown-ups table.</p>
 
 <div class="text"><!-- {{{ -->
 
-<p>Big-O isn't as mystical as it seems at first. It doesn't have to be more
+<p>Big-O isn't as mystical as it seems at first. Big-O is a way of
+characterizing how your code's speed is affected by the size of the data its
+working on.  There's a lot of theory behind it, but it doesn't have to be more
 than a common-sense assessment of how your code will behave as it works on more
 data.</p>
 
@@ -377,7 +383,7 @@ an algorithm, or the "time complexity."</p>
     <ul>
     <li class="incremental">Identify your code</li>
     <li class="incremental">Identify N</li>
-    <li class="incremental">Count the steps in a typical run</li>
+    <li class="incremental">Count the steps in a <em><i>typical</i></em> run</li>
     <li class="incremental">Keep the most significant part</li>
     </ul>
 </div>
