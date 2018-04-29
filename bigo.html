@@ -885,25 +885,10 @@ even if they have worse complexity, are best.</p>
 
 
 <div class="slide">
-    <h1>Advanced</h1>
+    <h1>Advanced: Amortization</h1>
     <ul>
-    <li class="incremental">Amortization
-        <ul>
-        <li class="incremental">Long-term averaging</li>
-        <li class="incremental">Operations can take different times</li>
-        </ul>
-    </li>
-    <li class="incremental">Typical case vs worst case
-        <pre class="python small incremental">
-        set(i * (47) for i in range(50000))         # O(N)
-        # Wall time: 10.3 ms
-        </pre>
-        <pre class="python small incremental">
-        set(i * (2**61-1) for i in range(50000))    # O(N²)
-        # Wall time: 34.2 s   (3300x slower!)
-        </pre>
-    </li>
-    <li class="incremental">Lots more math: O, o, &Omega;, &omega;, &Theta; </li>
+    <li class="incremental">Long-term averaging</li>
+    <li class="incremental">Operations can take different times</li>
     </ul>
 </div>
 
@@ -921,6 +906,29 @@ mean that every call to append() takes the same amount of time.  In fact,
 most of the calls take the same short time, but some of the calls take longer,
 and those long calls get longer as the list gets longer.  But they also get
 less frequent, so the average is a constant time.</p>
+
+</div><!-- }}} -->
+
+
+<div class="slide">
+    <h1>Advanced: Worst case</h1>
+    <ul>
+    <li class="incremental">Typical case vs worst case
+        <pre class="python small incremental">
+        set(i * (47) for i in range(50000))         # O(N)
+        # Wall time: 10.3 ms
+        </pre>
+        <pre class="python small incremental">
+        set(i * (2**61-1) for i in range(50000))    # O(N²)
+        # Wall time: 34.2 s   (3300x slower!)
+        </pre>
+    </li>
+    <li class="incremental">Dicts also</li>
+    <li class="incremental">Hash randomization prevents DDOS</li>
+    </ul>
+</div>
+
+<div class="text"><!-- {{{ -->
 
 <p>So far all of this discussion about the typical, or expected time for
 operations.  That is, the time the algorithm will take for a typical data
@@ -945,10 +953,24 @@ denial-of-service attack against web servers.  The defense against the attack
 was hash randomization, which prevented the attackers from knowing how strings
 would be hashed.</p>
 
+</div><!-- }}} -->
+
+
+<div class="slide">
+    <h1>Advanced: more math</h1>
+    <ul>
+    <li>Lots more: O, o, &Omega;, &omega;, &Theta;</li>
+    <li>You don't need it</li>
+    </ul>
+</div>
+
+<div class="text"><!-- {{{ -->
+
 <p>Lastly, if you do more research into this, there is much more math involved,
-with more symbols.  Know that for day-to-day programming, you already have
-everything you need.  If you enjoy the math, go for it, but don't feel like
-you have to.</p>
+with more symbols.  Mathematicians have used every letter that sounds like or
+looks like O to mean something for algorithmic analysis. Know that for
+day-to-day programming, you already have everything you need.  If you enjoy the
+math, go for it, but don't feel like you have to.</p>
 
 </div><!-- }}} -->
 
