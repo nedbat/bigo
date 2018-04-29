@@ -1,5 +1,11 @@
 <!DOCTYPE html> <!-- vim: set foldmethod=marker cc=60 :-->
 <!--
+TODO
+    - replacing list with set
+        - mention converting the list to a set is O(N)
+-->
+
+<!--
 Process this file with cog:
 
     $ pip install -r requirements.txt
@@ -40,7 +46,6 @@ Process this file with cog:
 
     <!-- *** Custom style for this deck {{{ -->
     <style type="text/css">
-    /* for highlighting lines of code */
     .absleft {
         position: absolute;
         top: 0;
@@ -57,6 +62,7 @@ Process this file with cog:
         padding-right: 5%;
         box-sizing: border-box;
     }
+    /* for highlighting lines of code */
     .o_1 {
         background: #3f3;
         border-radius: .15em;
@@ -197,9 +203,9 @@ called Big-O.</p>
     <h1>Big-O</h1>
     <ul>
     <li class="incremental">How code slows as data grows</li>
+    <li class="incremental">Not the same as running time</li>
     <li class="incremental">Big trend over time</li>
     <li class="incremental">10&times; data &rarr; ??&times; time</li>
-    <li class="incremental">Not the same as running time</li>
     <li class="incremental">Mathy, but doesn't have to be</li>
     </ul>
 </div>
@@ -255,13 +261,21 @@ It's just a notation about N.</p>
 
 <div class="slide image">
     <h1>Counting beans</h1>
-    <div class='incremental' style="float: left; width: 48%">
+    <div class='incremental' style="position:absolute; top:20%; left:5%; width: 48%">
         <img width='100%' src='bean_counting.png' />
-        <p class="big center">O(N)</p>
+        <p class="big center incremental" style="position:absolute; top:4.5em; left:9em;">O(N)</p>
     </div>
-    <div class='incremental' style="float: right; width: 48%">
+    <div class='incremental' style="position:absolute; top:20%; right:2%; width: 48%">
         <img width='100%' src='bean_labels.png' />
-        <p class="big center">O(1)</p>
+        <p class="big center incremental" style="position:absolute; top:4em; right:2em;">O(1)</p>
+    </div>
+    <div class='incremental'>
+        <div class='center' style="float: left; width: 48%; margin-top: .5em">
+            <tt class="big">for x in my_list:</tt>
+        </div>
+        <div class='center' style="float: right; width: 48%; margin-top: .5em">
+            <tt class="big">len(my_list)</tt>
+        </div>
     </div>
 </div>
 
@@ -308,9 +322,9 @@ algorithm.</p>
         <p class="big center">O(N)</p>
     </div>
     <div class='incremental center' style="float: right; width: 48%">
-        <p class="center">Dictionary</p>
+        <p class="center">Encyclopedia</p>
         <div style='border: 1px solid #888; border-bottom: 1px dashed #ccc; height: 12em; overflow: hidden'>
-            <img width='100%' src='dictionary.jpg' />
+            <img width='100%' src='encyclopedia.jpg' />
         </div>
         <p class="big center">O(log N)</p>
     </div>
@@ -598,28 +612,32 @@ one thing to take away from this entire talk, it's "avoid N<sup>2</sup>".</p>
 
 <div class="slide">
     <h1>Python time complexities</h1>
-    <table style="float:left;margin-right: 0em">
-        <tr><th colspan='2'>Lists</th></tr>
+    <div style="position:absolute;top:3em;left:5%">
+    <table>
+        <tr><th colspan='2'>Lists  <tt style='margin-left:1em'> [a, b, c, ...]</tt></th></tr>
         <tr><td><tt>mylist.append(val)  </tt></td><td>O(1)</td></tr>
         <tr><td><tt>mylist[i]           </tt></td><td>O(1)</td></tr>
         <tr><td><tt>val in mylist       </tt></td><td style="position:relative">O(N)<span class="incremental cell_highlight o_n">O(N)</span></td></tr>
         <tr><td><tt>for val in mylist:  </tt></td><td>O(N)</td></tr>
         <tr><td><tt>mylist.sort()       </tt></td><td>O(N log N)</td></tr>
     </table>
-    <table style="float:right;margin-right: 0em">
-        <tr><th colspan='2'>Dicts</th></tr>
+    </div>
+    <div style="position:absolute;top:3em;right:5%">
+    <table>
+        <tr><th colspan='2'>Dicts <tt style='margin-left:1em'>{k:v, ...}</th></tr>
         <tr><td><tt>mydict[key] = val   </tt></td><td>O(1)</td></tr>
         <tr><td><tt>mydict[key]         </tt></td><td>O(1)</td></tr>
         <tr><td><tt>key in mydict       </tt></td><td style="position:relative">O(1)<span class="incremental cell_highlight o_1">O(1)</span></td></tr>
         <tr><td><tt>for key in mydict:  </tt></td><td>O(N)</td></tr>
     </table>
-    <table style="float:right;margin-right: 0em; margin-top: 1em">
-        <tr><th colspan='2'>Sets</th></tr>
+    <table style='margin-top:1em'>
+        <tr><th colspan='2'>Sets <tt style='margin-left:1em'>{a, b, c, ...}</tt></th></tr>
         <tr><td><tt>myset.add(val)      </tt></td><td>O(1)</td></tr>
         <tr><td><tt>val in myset        </tt></td><td style="position:relative">O(1)<span class="incremental cell_highlight o_1">O(1)</span></td></tr>
         <tr><td><tt>for val in myset:   </tt></td><td>O(N)</td></tr>
     </table>
-    <div style="position:absolute;left:3em;bottom:8em;">
+    </div>
+    <div style="position:absolute;left:5%;bottom:8em;">
         <p class="incremental">Pro-tip: replace lists with sets</p>
     </div>
 </div>
@@ -759,6 +777,39 @@ while the right code made it O(N).</p>
 code reduced the time to 0.4 seconds.</p>
 
 </div><!-- }}} -->
+
+
+<div class="slide">
+    <h1>More possibilities</h1>
+    <ul>
+    <li class="incremental">Complexities
+        <ul>
+        <li class="incremental">O(N<sup>3</sup>), O(N<sup>4</sup>), ...</li>
+        <li class="incremental">O(2<sup>N</sup>), O(N<sup>N</sup>)</li>
+        <li class="incremental">O(N!)</li>
+        </ul>
+        </li>
+    <li class="incremental">Dimensions
+        <ul>
+        <li class="incremental">N, M, k, etc</li>
+        <li class="incremental">O((n+k) log n)</li>
+        </ul>
+</div>
+
+<div class="text"><!-- {{{ -->
+
+<p>The possibilities for algorithmic complexities go beyond the 1, N, N² that
+we've seen so far.  There are all sorts of other forms that can occur, usually
+worse than the N² we've been demonizing here so far.</p>
+
+<p>You might also need more than one varying dimension.  Sometimes your code
+will deal with data that can grow in more than one way.  In that case, you use
+another variable, and describe the complexity in terms of both. As an example,
+the line intersection algorithm I used has a complexity of (n+k) log n, where n
+is the number of lines, and k is the number of intersections.</p>
+
+</div><!-- }}} -->
+
 
 
 <div class="slide">

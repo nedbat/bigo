@@ -87,7 +87,7 @@ h1, h2, h3, h4 {
 }
 
 /* Styled the same as an h1 */
-p.big {
+.big {
     font-weight: 700;
     font-size: 150%;
 }
