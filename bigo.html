@@ -115,11 +115,12 @@ assert sys.version_info > (3, 6), "This needs Python 3.6+"
 SX, SY = 1000, 650
 LABEL_MARGIN = 10
 
-def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, css_class=''):
+def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, css_class='', incremental=False):
     import math
     from curves import lrange, beziers
 
     cog.outl(f'''\
+    <div class="{'incremental' if incremental else ''}">
     <svg class="{css_class}" viewBox="0 0 {SX} {SY}">
         <g transform="translate(0 {SY}) scale({scale}, {-scale})">
             <rect fill="white" stroke="#333" stroke-width="{stroke_width/2}" height="100%" width="100%" x="0" y="0"/>
@@ -174,6 +175,7 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
     cog.out('''\
         </g>
     </svg>
+    </div>
     ''')
 
 ]]]-->
@@ -575,6 +577,7 @@ almost every) case, dictionary access is O(1).</p>
     <!--[[[cog
     draw_the_graph(10, axis_labels=True, curve_labels=True)
     ]]]-->
+    <div class="">
     <svg class="" viewBox="0 0 1000 650">
         <g transform="translate(0 650) scale(10, -10)">
             <rect fill="white" stroke="#333" stroke-width="0.5" height="100%" width="100%" x="0" y="0"/>
@@ -592,6 +595,7 @@ almost every) case, dictionary access is O(1).</p>
             <text transform="scale(0.2 -0.2)" width="150" height="50" x="475" y="-60">1</text>
         </g>
     </svg>
+    </div>
 
     <!--[[[end]]]-->
 </div>
@@ -818,6 +822,7 @@ is the number of lines, and k is the number of intersections.</p>
     <!--[[[cog
     draw_the_graph(10, axis_labels=False, css_class="lefthalf")
     ]]]-->
+    <div class="">
     <svg class="lefthalf" viewBox="0 0 1000 650">
         <g transform="translate(0 650) scale(10, -10)">
             <rect fill="white" stroke="#333" stroke-width="0.5" height="100%" width="100%" x="0" y="0"/>
@@ -828,18 +833,22 @@ is the number of lines, and k is the number of intersections.</p>
             <path d='M-0.413,10.000 C-0.286,10.000 -0.160,10.000 0.000,10.000 C0.160,10.000 0.352,10.000 0.583,10.000 C0.813,10.000 1.082,10.000 1.406,10.000 C1.730,10.000 2.110,10.000 2.569,10.000 C3.027,10.000 3.564,10.000 4.211,10.000 C4.858,10.000 5.616,10.000 6.531,10.000 C7.445,10.000 8.516,10.000 9.808,10.000 C11.099,10.000 12.612,10.000 14.436,10.000 C16.261,10.000 18.397,10.000 20.975,10.000 C23.552,10.000 26.570,10.000 30.210,10.000 C33.851,10.000 38.114,10.000 43.256,10.000 C48.398,10.000 54.420,10.000 61.683,10.000 C68.946,10.000 77.451,10.000 87.713,10.000 C97.974,10.000 109.991,10.000 124.480,10.000 C138.969,10.000 155.928,10.000 176.415,10.000 C196.903,10.000 220.918,10.000 249.776,10.000 C278.634,10.000 312.336,10.000 353.401,10.000 C394.466,10.000 442.894,10.000 499.775,10.000 C556.656,10.000 621.989,10.000 706.533,10.000 C791.077,10.000 894.832,10.000 998.587,10.000 ' stroke='#33cc00' stroke-width='1' fill='none' />
         </g>
     </svg>
+    </div>
 
     <!--[[[end]]]-->
-    <svg class="lefthalf incremental" viewBox="0 0 1000 650">
+    <div class="incremental">
+    <svg class="lefthalf" viewBox="0 0 1000 650">
         <g transform="translate(0 650) scale(10, -10)">
             <rect fill="none" stroke="#333" stroke-width="0.5" height="13" width="20" x="0" y="0"/>
         </g>
     </svg>
+    </div>
 
     <!--[[[cog
-    draw_the_graph(50, axis_labels=False, stroke_width=.2, css_class="lefthalf incremental")
+    draw_the_graph(50, axis_labels=False, stroke_width=.2, css_class="lefthalf", incremental=True)
     ]]]-->
-    <svg class="lefthalf incremental" viewBox="0 0 1000 650">
+    <div class="incremental">
+    <svg class="lefthalf" viewBox="0 0 1000 650">
         <g transform="translate(0 650) scale(50, -50)">
             <rect fill="white" stroke="#333" stroke-width="0.1" height="100%" width="100%" x="0" y="0"/>
             <path d='M-0.413,0.170 C-0.286,0.087 -0.160,0.003 0.000,0.000 C0.160,-0.003 0.352,0.073 0.583,0.340 C0.813,0.606 1.082,1.062 1.406,1.976 C1.730,2.891 2.110,4.263 2.569,6.597 C3.027,8.932 3.563,12.228 4.211,17.731 C4.859,23.235 5.618,30.945 6.531,42.651 C7.443,54.356 8.509,70.057 9.808,96.190 C11.106,122.323 12.638,158.890 14.436,208.409 C16.235,257.929 18.301,320.403 20.975,439.937 C23.648,559.471 26.929,736.065 30.210,912.659 ' stroke='#ff3333' stroke-width='0.2' fill='none' />
@@ -849,6 +858,7 @@ is the number of lines, and k is the number of intersections.</p>
             <path d='M-0.413,10.000 C-0.286,10.000 -0.160,10.000 0.000,10.000 C0.160,10.000 0.352,10.000 0.583,10.000 C0.813,10.000 1.082,10.000 1.406,10.000 C1.730,10.000 2.110,10.000 2.569,10.000 C3.027,10.000 3.564,10.000 4.211,10.000 C4.858,10.000 5.616,10.000 6.531,10.000 C7.445,10.000 8.516,10.000 9.808,10.000 C11.099,10.000 12.612,10.000 14.436,10.000 C16.261,10.000 18.397,10.000 20.975,10.000 C23.552,10.000 26.570,10.000 30.210,10.000 C33.851,10.000 38.114,10.000 43.256,10.000 C48.398,10.000 54.420,10.000 61.683,10.000 C68.946,10.000 77.451,10.000 87.713,10.000 C97.974,10.000 109.991,10.000 124.480,10.000 C138.969,10.000 155.928,10.000 176.415,10.000 C196.903,10.000 220.918,10.000 249.776,10.000 C278.634,10.000 312.336,10.000 353.401,10.000 C394.466,10.000 442.894,10.000 499.775,10.000 C556.656,10.000 621.989,10.000 706.533,10.000 C791.077,10.000 894.832,10.000 998.587,10.000 ' stroke='#33cc00' stroke-width='0.2' fill='none' />
         </g>
     </svg>
+    </div>
 
     <!--[[[end]]]-->
     </div>
