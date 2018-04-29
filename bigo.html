@@ -173,9 +173,9 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
     ''')
 
 ]]]-->
-<!--[[[end]]]-->
+<!--[[[end]]]
 }}}
-
+-->
 <body class="slides">
 
 <div class="slide title" data-layout="clean">
@@ -622,7 +622,7 @@ one thing to take away from this entire talk, it's "avoid N<sup>2</sup>".</p>
     </div>
     <div style="position:absolute;top:3em;right:5%">
     <table>
-        <tr><th colspan='2'><b>Dicts</b> <tt style='margin-left:1em'>{k:v, ...}</th></tr>
+        <tr><th colspan='2'><b>Dicts</b> <tt style='margin-left:1em'>{k:v, ...}</tt></th></tr>
         <tr><td><tt>mydict[key] = val   </tt></td><td>O(1)</td></tr>
         <tr><td><tt>mydict[key]         </tt></td><td>O(1)</td></tr>
         <tr><td><tt>key in mydict       </tt></td><td style="position:relative">O(1)<span class="incremental cell_highlight o_1">O(1)</span></td></tr>
