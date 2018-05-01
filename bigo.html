@@ -673,7 +673,7 @@ replace a list lookup with a set lookup, do it.</p>
     </pre>
 
     <div class="incremental">
-    <p class="big" style="float:right;margin-top:0">Good</p>
+    <p style="float:right;margin-top:0">Good</p>
     <pre class="python">
     #.. make a set ..
     if thing in my_set:     # O(1)
@@ -681,7 +681,7 @@ replace a list lookup with a set lookup, do it.</p>
     </div>
 
     <div class="incremental">
-    <p class="big" style="float:right;margin-top:0">Bad</p>
+    <p style="float:right;margin-top:0">Bad</p>
     <pre class="python">
     #.. make a list ..
     my_set = set(my_list)   # O(N)
@@ -690,7 +690,7 @@ replace a list lookup with a set lookup, do it.</p>
     </div>
 
     <div class="incremental">
-    <p class="big" style="float:right;margin-top:0">Good</p>
+    <p style="float:right;margin-top:0">Good</p>
     <pre class="python">
     #.. make a list ..
     my_set = set(my_list)   # O(N)
@@ -699,6 +699,23 @@ replace a list lookup with a set lookup, do it.</p>
     </pre>
     </div>
 </div>
+
+<div class="text"><!-- {{{ -->
+
+<p>Replacing a list lookup with a set lookup is good, but you have to be careful.
+The best way is to not create a list in the first place. Instead, create a set
+from the start.</p>
+
+<p>The worst way to go is to have a list in hand, and then make a set from it,
+then do the lookup in the set.  The lookup is a fast constant-time lookup,
+but what did it cost to create the set?  Creating a set from an iterable is
+an O(N) operation because every element of the iterable has to be considered.</p>
+
+<p>Making a set just to perform one lookup is a waste of time.  But it can be
+a good tradeoff if you can make the set once and then use it for many lookups.</p>
+
+</div><!-- }}} -->
+
 
 
 <div class="slide">
