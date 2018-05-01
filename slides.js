@@ -26,6 +26,15 @@ $(function() {
             incrementalBefore: function (el) {
                 $(el).css({ opacity: 0.01 });
             },
+            incrementalAfter: function (el) {
+                var $el = $(el);
+                if ($el.hasClass("fadein")) {
+                    $el.animate({opacity: '1'}, $el.data("timein") || 650);
+                }
+                else {
+                    $el.css({ opacity: 1 });
+                }
+            },
             animInForward: function (slide) {
                 var slide = $(slide);
                 if (slide.hasClass("fadein")) {
