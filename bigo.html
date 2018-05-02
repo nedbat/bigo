@@ -813,57 +813,6 @@ a good tradeoff if you can make the set once and then use it for many lookups.</
     <div class="incremental" style='position:absolute; bottom:2.5em; left:5%; border: 1px solid #888; width: 42%; height: 10em; overflow: hidden'>
         <img src="straps.png" width="125%"/>
     </div>
-    <div class="incremental fadein" data-timein='4000'>
-        <div class="absright">
-            <p style="text-align: right; margin-top: .75em">
-                <span class="o_n2">&nbsp; O(N²) &nbsp;</span>
-                <span class="o_n">&nbsp; O(N) &nbsp;</span>
-                <span class="o_1">&nbsp; O(1) &nbsp;</span>
-            </p>
-        </div>
-        <div class="absleft">
-            <h1 style="margin-top: 0">&nbsp;</h1>
-            <pre class="python small">
-                def __init__(self):
-                    self.items = []
-
-                def __getitem__(self, pt):
-                    <span class="o_n2">for key, value in self.items:</span>
-                        if key == pt:
-                            return value
-
-                    value = []
-                    <span class="o_n">self.items.append((pt, value))</span>
-                    return value
-            </pre>
-        </div>
-        <div class="absright">
-            <h1 style="margin-top: 0">&nbsp;</h1>
-            <pre class="python small">
-                def __init__(self):
-                    self.items = {}     # pt -> value
-                    self.rounds = {}    # pt -> pt
-
-                def __getitem__(self, pt):
-                    val = <span class="o_n">self.items.get(pt)</span>
-                    if val is not None:
-                        return val
-
-                    for jitter in [0, 0.5]:
-                        pt_rnd = rounded(pt, jitter)
-                        pt0 = <span class="o_n">self.rounds.get(pt_rnd)</span>
-                        if pt0 is not None:
-                            return <span class="o_n">self.items[pt0]</span>
-
-                    <span class="o_n">self.items[pt] = val = []</span>
-                    for jitter in [0, 0.5]:
-                        pt_rnd = rounded(pt, jitter)
-                        <span class="o_n">self.rounds[pt_rnd] = pt</span>
-
-                    return val
-            </pre>
-        </div>
-    </div>
     <div class="incremental fadein">
         <div class="popup" style="top:14em;left:11em;">2000 pts</div>
         <div class="popup" style="top:2.5em;left:11.5em;">20s ☹</div>
