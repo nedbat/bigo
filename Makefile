@@ -50,7 +50,7 @@ publish: $(PX) pngs
 	cp -f $(IMAGES) $(WEBPREZHOME)
 	cp -rf $(VENDOR) $(WEBPREZHOME)
 
-ZIP_EXTRA = closed_captioning.html
+ZIP_EXTRA = captioning.html
 
 zip $(ZIP_FILE): $(SLIDE_HTML)
 	zip -r $(ZIP_FILE) $(SLIDE_HTML) $(SUPPORT) $(IMAGES) $(ZIP_EXTRA) $(VENDOR)
