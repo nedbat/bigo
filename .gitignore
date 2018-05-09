@@ -4,3 +4,4 @@ png
 *.out
 *.px
 !px_template.px
+*.zip

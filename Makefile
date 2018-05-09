@@ -1,8 +1,11 @@
 SLUG = bigo
 
 SLIDE_HTML = $(SLUG).html
+ZIP_FILE = $(SLUG).zip
 
 SUPPORT = lineselect.js slides.js slides.css
+IMAGES = *.jpg *.png
+VENDOR = slippy highlight
 
 .PHONY: $(SLIDE_HTML)
 
@@ -21,6 +24,7 @@ clean:
 	rm -f $(OUTPUT)
 	rm -rf __pycache__
 	rm -rf $(PNG_DIR)
+	rm -f $(ZIP_FILE)
 
 sterile: clean
 	python -m cogapp -x -r $(SLIDE_HTML)
@@ -43,6 +47,10 @@ publish: $(PX) pngs
 	cp -f $(PNG_DIR)/* $(WEBPIXHOME)
 	cp -f $(SLIDE_HTML) $(WEBPREZHOME)/$(SLUG).html
 	cp -f $(SUPPORT) $(WEBPREZHOME)
-	cp -f *.jpg *.png $(WEBPREZHOME)
-	cp -rf slippy $(WEBPREZHOME)
-	cp -rf highlight $(WEBPREZHOME)
+	cp -f $(IMAGES) $(WEBPREZHOME)
+	cp -rf $(VENDOR) $(WEBPREZHOME)
+
+ZIP_EXTRA = closed_captioning.html
+
+zip $(ZIP_FILE): $(SLIDE_HTML)
+	zip -r $(ZIP_FILE) $(SLIDE_HTML) $(SUPPORT) $(IMAGES) $(ZIP_EXTRA) $(VENDOR)
