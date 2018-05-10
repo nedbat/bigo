@@ -200,13 +200,13 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
 <p>One of the things that interests me about writing software is the two mindsets
 that inform it.  One is computer science, another is software engineering.</p>
 
-<p>Computer science is part of mathematics. It's full of complex notation about
+<p>Computer science is a branch of mathematics. It's full of complex notation about
 abstract ideas, and proofs of mathematical principles.  Software engineering
 is focused on how to actually write software that works.  The two sides interact,
 but they are very different.</p>
 
 <p>If you are working in software, but don't have a computer science degree, you
-might feel like there are mysteries and incantations you are missing, that you need.
+might feel like there are mysteries and incantations you are missing that you need.
 For the most part, computer science is about things you don't encounter in day-to-day
 software development.</p>
 
@@ -229,7 +229,7 @@ analysis, or Big-O notation.</p>
 <div class="text"><!-- {{{ -->
 
 <p>Big-O isn't as mystical as it seems at first. Big-O is a way of
-characterizing how your code's speed is affected by the size of the data its
+characterizing how your code's speed is affected by the size of the data it's
 working on.  There's a lot of theory behind it, but it doesn't have to be more
 than a common-sense assessment of how your code will behave as it works on more
 data.</p>
@@ -367,7 +367,7 @@ grows.</p>
 
 <p>Counting beans and finding words are both examples of real-world tasks that
 have very different growth rates, depending on the details of the job.  Big-O
-notation is a way to understand growth rates. Understanding the algorithmic
+notation is a way to understand those growth rates. Understanding the algorithmic
 complexity of your code is important for writing efficient code that performs
 as you want.</p>
 
@@ -384,6 +384,7 @@ as you want.</p>
     <li class="incremental">Big-O:
         <ul>
         <li>complexity</li>
+        <li>time complexity</li>
         <li>algorithmic complexity</li>
         <li>asymptotic complexity</li>
         </ul>
@@ -424,8 +425,9 @@ an algorithm, or the "time complexity."</p>
 
 <p>First, figure out what piece of code you are going to consider. This may
 seem obvious, but if you are unclear about the boundaries of the code, you
-may get an answer that is useless to you.  We'll be looking at specific
-functions.</p>
+may get an answer that is useless to you.  Working in large systems, it's
+easy to focus on too small a part of the code, or to try to think about
+too large a piece of the system.</p>
 
 <p>Second, identify what N means.  This will be the size of the data the
 function is working on.  Usually, it will be fairly obvious.  But sometimes,
@@ -435,7 +437,9 @@ data.</p>
 
 <p>Third is the real work: you read your code carefully, considering
 how many steps of work it will do in a typical execution run.  Keep track
-of the number of steps, expressed in terms of N.</p>
+of the number of steps, expressed in terms of N. "Typical" here means
+two things: you can consider typical real-world data, and also you should
+think about the average performance over many runs of the code.</p>
 
 <p>Once you have a complete expression for the number of steps, you simplify
 it by throwing parts of it away.  Big-O is all about how the run time changes
@@ -444,14 +448,19 @@ kept.</p>
 
 <p>For example, if you counted 2N+1 steps, then you have an O(N) algorithm. There's
 no point keeping the +1, because as N grows larger and larger, the +1 becomes
-more and more insigificant.  Also, the 2 coefficient doesn't matter: 2N grows the
+less and less sigificant.  Also, the 2 coefficient doesn't matter: 2N grows the
 same as N does: if N doubles, then 2N doubles, and N doubles.  So O(2N+1) is the
 same as O(N), and we keep the simpler form.</p>
+
+<p>Notice there are no units involved here. We aren't trying to calculate the
+actual running time of the code.  We're trying to understand how the running
+time changes as the data size changes.</p>
 
 <p>About "typical": big-O doesn't by itself imply typical runs.  You can also
 talk about the big-O of the worst case, which we'll touch on later. But when
 people causually mention the big-O complexity of code, they usually mean the
-typical, or expected running time.</p>
+typical, or expected running time. If you are unsure which people mean, ask
+for clarification.</p>
 
 </div><!-- }}} -->
 
@@ -481,7 +490,23 @@ typical, or expected running time.</p>
 
 <div class="text"><!-- {{{ -->
 
-<p>Here's a real example. This code searches a list of tuples looking for a
+<p>Here's a real example:</p>
+
+<code lang="python">
+moms = [
+    ("Ned", "Eleanor"),
+    ("Max", "Susan"),
+    ("Susan", "Shelly"), ...
+]
+def find_mom(moms, child):
+    """Find the mom of `child`."""
+    for child_name, mom_name in moms:
+        if child == child_name:
+            return mom_name
+    return None
+</code>
+
+<p>The find_mom function searches a list of tuples looking for a
 match on the first element of the tuple. In this case, N is the length of the
 list of tuples.</p>
 
@@ -490,9 +515,10 @@ whether we'll find it at the beginning of the list, or near the end. So we
 guess that over many runs of the function, we'll have to look at (on average)
 half the entries in the list.</p>
 
-<p>Looping over the moms will happen N/2 times. Each time around, there's one
-step to get the next element, and one step each to assign the tuple to
-child_name and mom_name. So the for-loop line gives us 3 * N / 2 steps.</p>
+<p>In our average run, looping over the moms will happen N/2 times. Each time
+around, there's one step to get the next element, and one step each to assign
+the tuple to child_name and mom_name. So the for-loop line gives us 3*N/2
+steps.</p>
 
 <p>The comparison is just one step, but since we loop N/2 times, it contributes
 another N/2 steps.  The return statement happens only once, for 1 more
@@ -502,8 +528,8 @@ step.</p>
 in the large-scale growth trends as N gets very large, we drop the +1, and the
 2 coefficient, to get O(N).</p>
 
-<p>This is a linear algorithm: when the moms list doubles in size, we can expect
-it to take twice as long.</p>
+<p>Our analysis has shown us this is a linear algorithm: when the moms list
+doubles in size, we can expect find_mom to take twice as long.</p>
 
 </div><!-- }}} -->
 
@@ -530,7 +556,18 @@ it to take twice as long.</p>
 
 <p>Let's consider another example.  With our moms data structure, let's
 consider this function to count how many of the entries in our list are
-grandmothers: the mom in the pair also appears as a child in another pair.</p>
+grandmothers: the mom in the pair also appears as a child in another pair:</p>
+
+<code lang="python">
+def how_many_grandmothers(moms):
+    """How many moms are grand-moms?"""
+    grandmothers = 0
+    for child, mom in moms:
+        grandma = find_mom(moms, mom)
+        if grandma:
+            grandmothers += 1
+    return grandmothers
+</code>
 
 <p>We know that we are only going to keep the most significant component,
 and we don't care about the coefficients, so we won't bother to track them.
@@ -540,9 +577,9 @@ Instead we'll just note the exponent for each part of the code.</p>
 N times.  The for statement itself will contribute N steps.</p>
 
 <p>The next line is the interesting one though: we call find_mom.  We just did
-the analysis of find_mom, it's O(N).  So this line contributes N steps, but
-it's executed N times, once for each execution of the loop.  So this line
-contributes N<sup>2</sup> steps.</p>
+the analysis of find_mom, so we know it's O(N).  This line contributes N steps
+each time it's executed, but it's executed N times, once for each execution of
+the loop.  So this line contributes N<sup>2</sup> steps.</p>
 
 <p>We can continue with the rest of the analysis, but note that we already have
 an N<sup>2</sup> component, so N components or constant components will
@@ -551,7 +588,6 @@ eventually be discarded, so we can skip collecting them.</p>
 <p>Because the largest component is N<sup>2</sup>, the result is O(N<sup>2</sup>).</p>
 
 </div><!-- }}} -->
-
 
 
 <div class="slide">
@@ -718,7 +754,7 @@ The best way is to not create a list in the first place. Instead, create a set
 from the start.</p>
 
 <p>The worst way to go is to have a list in hand, and then make a set from it,
-then do the lookup in the set.  The lookup is a fast constant-time lookup,
+then do the lookup in the set.  The set lookup is a fast constant-time lookup,
 but what did it cost to create the set?  Creating a set from an iterable is
 an O(N) operation because every element of the iterable has to be considered.</p>
 
@@ -840,13 +876,16 @@ structures, it's slower.  If we look at the lines that deal with the data, we
 can see why.  The left code has an O(N) line, while the right code only has
 O(1) lines.</p>
 
-<p>This code deals with a collection of points.  You can't see it here, but
-this function is called once for each point in the collection, so the O(N) line
-in effect becomes an O(N²) line.  The left code made the whole program O(N²),
-while the right code made it O(N).</p>
+<p>This code operates on a collection of points.  You can't see it here, but in
+the real program this function is called once for each point in the collection,
+so the O(N) line in effect becomes an O(N²) line.  The left code made the whole
+program O(N²), while the right code made it O(N).</p>
 
-<p>Running with 2000 points, the N² code took 20 seconds.  Switching to the O(N)
-code reduced the time to 0.4 seconds.</p>
+<p>Running with 2000 points, the N² code took 20 seconds.  Switching to the
+O(N) code reduced the time to 0.4 seconds.  You might not consider 2000 points
+to be a lot of data.  But for that size data the difference between O(N) and
+O(N²) can be the difference between two thousand and four million. It can make
+a big difference.</p>
 
 </div><!-- }}} -->
 
@@ -874,13 +913,15 @@ code reduced the time to 0.4 seconds.</p>
 
 <p>The possibilities for algorithmic complexities go beyond the 1, N, N² that
 we've seen so far.  There are all sorts of other forms that can occur, usually
-worse than the N² we've been demonizing here so far.</p>
+worse than the N² we've been demonizing here so far.  Considering all possible
+combinations of N boolean values will give you O(2<sup>N).  Operating on all
+permutations of N values will be O(N!).</p>
 
 <p>You might also need more than one varying dimension.  Sometimes your code
 will deal with data that can grow in more than one way.  In that case, you use
 another variable, and describe the complexity in terms of both. As an example,
-the line intersection algorithm I used has a complexity of (n+k) log n, where n
-is the number of lines, and k is the number of intersections.</p>
+a line intersection algorithm I used has a complexity of O((n+k) log n), where
+n is the number of lines, and k is the number of intersections.</p>
 
 </div><!-- }}} -->
 
@@ -946,6 +987,11 @@ of data you'll be using.</p>
 all scrambled up because the actual coefficients I used make the constant-time
 algorithm slower than the others for the very small numbers.</p>
 
+<p>When we discarded the coefficients and smaller exponents, it was because as
+N grows very large, they don't matter.  But in actually running your code, those
+components are still there, and for small data, they may be more important than
+the larger ones we kept.</p>
+
 <p>Don't get fancy unless you have to.  For small data the simplest algorithms,
 even if they have worse complexity, are best.</p>
 
@@ -983,12 +1029,14 @@ less frequent, so the average is a constant time.</p>
     <ul>
     <li class="incremental">Typical case vs worst case
         <pre class="python small incremental">
+        # Typical
         s = set()
         for i in range(50000):
             s.add(i * 47)                   # O(1)
         # O(N), wall time: 10.3 ms
         </pre>
         <pre class="python small incremental">
+        # Worst
         s = set()
         for i in range(50000):
             s.add(i * (2**61-1))            # O(N)
@@ -1002,11 +1050,11 @@ less frequent, so the average is a constant time.</p>
 
 <div class="text"><!-- {{{ -->
 
-<p>So far all of this discussion about the typical, or expected time for
-operations.  That is, the time the algorithm will take for a typical data
-set.  Sometimes it's also important to consider the worst case.  How will
-the algorithm perform if given specially crafted data that will make it
-take as long as possible?</p>
+<p>So far all of this discussion has been about the typical, or expected time
+for operations.  That is, the time the algorithm will take for a typical data
+set, averaged over many runs.  Sometimes it's also important to consider the
+worst case.  How will the algorithm perform if given specially crafted data
+that will make it take as long as possible?</p>
 
 <p>As an example, looking up a value in a set is typically O(1), which makes
 building a set an O(N) operation.  But if you know how values are hashed,
@@ -1016,8 +1064,19 @@ worst-case scenario makes the lookup O(N), which makes building the set O(N²).<
 <p>Here are a typical case and a worst case:</p>
 
 <code lang="python">
-set(i * (47) for i in range(50000))         # O(N)  10.3 ms
-set(i * (2**61-1) for i in range(50000))    # O(N²) 34.2 s (3300x slower!)
+# Typical
+s = set()
+for i in range(50000):
+    s.add(i * 47)                   # O(1)
+# O(N), wall time: 10.3 ms
+</code>
+
+<code lang="python">
+# Worst
+s = set()
+for i in range(50000):
+    s.add(i * (2**61-1))            # O(N)
+# O(N²), wall time: 34.2 s   (3300x slower!)
 </code>
 
 <p>Dictionaries have the same worst-case behavior.  This was the basis for a
@@ -1063,7 +1122,8 @@ math, go for it, but don't feel like you have to.</p>
 <div class="text"><!-- {{{ -->
 
 <p>If you do discuss this more, a word of warning: experts are not always nice.
-When I began thinking about this topic last fall, <a pref='text/slowsgrows.px'>I wrote it up on my blog</a>.
+When I began thinking about this topic last fall,
+<a pref='text/slowsgrows.px'>I wrote it up on my blog</a>.
 A lot of people seemed to like it.</p>
 
 <p>But one commenter was less pleased.  While their tone could use some work,
@@ -1080,7 +1140,7 @@ and decided they were actually wrong about it.  They didn't agree.</p>
     <ul>
     <li class="incremental">Big-O is useful</li>
     <li class="incremental">Big-O doesn't have to be complicated</li>
-    <li class="incremental">You can do the thing</li>
+    <li class="incremental">You can do the thing!</li>
     </ul>
 </div>
 
