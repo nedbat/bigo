@@ -2,7 +2,6 @@
 <!--
 TODO:
     - explain n/2 better for find_mom
-    - unroll the worst-case set listcomp
 -->
 <!--
 Process this file with cog:
@@ -984,12 +983,16 @@ less frequent, so the average is a constant time.</p>
     <ul>
     <li class="incremental">Typical case vs worst case
         <pre class="python small incremental">
-        set(i * (47) for i in range(50000))         # O(N)
-        # Wall time: 10.3 ms
+        s = set()
+        for i in range(50000):
+            s.add(i * 47)                   # O(1)
+        # O(N), wall time: 10.3 ms
         </pre>
         <pre class="python small incremental">
-        set(i * (2**61-1) for i in range(50000))    # O(N²)
-        # Wall time: 34.2 s   (3300x slower!)
+        s = set()
+        for i in range(50000):
+            s.add(i * (2**61-1))            # O(N)
+        # O(N²), wall time: 34.2 s   (3300x slower!)
         </pre>
     </li>
     <li class="incremental">Dicts also</li>
