@@ -62,6 +62,14 @@ h1, h2, h3, h4 {
     padding: 0 .2em;
     color: #aaa;
 }
+.slide .punct:first-child {
+    padding-left: 0;
+}
+
+img.icon {
+    width: 1.2em;
+    vertical-align: bottom;
+}
 
 .slide p.generic {
     font-family: serif;
