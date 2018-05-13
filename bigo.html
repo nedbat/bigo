@@ -1,9 +1,5 @@
 <!DOCTYPE html> <!-- vim: set foldmethod=marker cc=60 :-->
 <!--
-TODO:
-    - explain n/2 better for find_mom
--->
-<!--
 Process this file with cog:
 
     $ pip install -r requirements.txt
@@ -189,7 +185,7 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
 -->
 <body class="slides">
 
-<div class="slide title" data-layout="clean">
+<div class="slide title" data-layout="clean" title="Big-O: How Code Slows as Data Grows">
     <h1 style="padding-top: 1em">Big-O:<br/>How Code Slows<br/>as Data Grows</h1>
     <h2>
         Ned Batchelder<br/>
@@ -201,6 +197,25 @@ def draw_the_graph(scale, axis_labels=True, curve_labels=False, stroke_width=1, 
         <br/><br/>
         <a class="implicit" href="http://bit.ly/bigopy"><span class="punct">http://</span>bit.ly<span class="punct">/</span>bigopy</a>
     </h2>
+</div>
+
+<div class="slide">
+    <h1>Mindsets</h1>
+    <ul>
+    <li class="incremental">Computer Science
+        <ul>
+        <li>Math, theoretical</li>
+        <li>Abstract</li>
+        </ul>
+    </li>
+    <li class="incremental">Software Engineering
+        <ul>
+            <li>Pragmatic</li>
+            <li>Does it work?</li>
+        </ul>
+    </li>
+    <li class="incremental">Some crossover</li>
+    </ul>
 </div>
 
 <div class="text"><!-- {{{ -->
@@ -222,6 +237,7 @@ software development.</p>
 analysis, or Big-O notation.</p>
 
 </div><!-- }}} -->
+
 
 <div class="slide">
     <h1>Big-O</h1>
@@ -456,7 +472,7 @@ kept.</p>
 
 <p>For example, if you counted 2N+1 steps, then you have an O(N) algorithm. There's
 no point keeping the +1, because as N grows larger and larger, the +1 becomes
-less and less sigificant.  Also, the 2 coefficient doesn't matter: 2N grows the
+less and less significant.  Also, the 2 coefficient doesn't matter: 2N grows the
 same as N does: if N doubles, then 2N doubles, and N doubles.  So O(2N+1) is the
 same as O(N), and we keep the simpler form.</p>
 
@@ -466,7 +482,7 @@ time changes as the data size changes.</p>
 
 <p>About "typical": big-O doesn't by itself imply typical runs.  You can also
 talk about the big-O of the worst case, which we'll touch on later. But when
-people causually mention the big-O complexity of code, they usually mean the
+people casually mention the big-O complexity of code, they usually mean the
 typical, or expected running time. If you are unsure which people mean, ask
 for clarification.</p>
 
@@ -720,7 +736,7 @@ replace a list lookup with a set lookup, do it.</p>
 
 
 <div class="slide">
-    <h1>Tradeoffs</h1>
+    <h1>Trade-offs</h1>
     <p class="incremental">"Replace list lookup with set lookup"</p>
     <pre class="python incremental">
     #.. make a list ..
@@ -767,7 +783,7 @@ but what did it cost to create the set?  Creating a set from an iterable is
 an O(N) operation because every element of the iterable has to be considered.</p>
 
 <p>Making a set just to perform one lookup is a waste of time.  But it can be
-a good tradeoff if you can make the set once and then use it for many lookups.</p>
+a good trade-off if you can make the set once and then use it for many lookups.</p>
 
 </div><!-- }}} -->
 
